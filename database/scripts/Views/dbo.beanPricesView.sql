@@ -1,4 +1,4 @@
-CREATCREATE OR ALTER VIEW BeanPricesView AS
+CREATE OR ALTER VIEW BeanPricesView AS
 SELECT
     b.name AS bean_name,
     p.price AS bean_price,
