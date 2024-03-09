@@ -5,7 +5,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'src/database/flyway/**'
+      - 'database/flyway/scripts/**'
 
   workflow_dispatch:
 
