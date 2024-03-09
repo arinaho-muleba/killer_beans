@@ -48,7 +48,7 @@ BEGIN
             IF CHARINDEX(',', @itemList) > 0
             BEGIN
                 SET @itemId = CAST(LEFT(@itemList, CHARINDEX(',', @itemList) - 1) AS INT);
-                SET @itemList = RIGHT(@itemList, LEN(@itemList) - CHARINDEX(',', @itemList));
+                SET @itemList = RIGHT(@itemList, LEN(@itemList) - CHARINDEX(',', @itemList) - 1);
             END
             ELSE
             BEGIN
@@ -60,7 +60,7 @@ BEGIN
             IF CHARINDEX(',', @quantityList) > 0
             BEGIN
                 SET @quantity = CAST(LEFT(@quantityList, CHARINDEX(',', @quantityList) - 1) AS INT);
-                SET @quantityList = RIGHT(@quantityList, LEN(@quantityList) - CHARINDEX(',', @quantityList));
+                SET @quantityList = RIGHT(@quantityList, LEN(@quantityList) - CHARINDEX(',', @quantityList) - 1);
             END
             ELSE
             BEGIN

@@ -1,76 +1,66 @@
 CREATE TABLE "Beans"(
-    "id" INT IDENTITY(1,1) NOT NULL,
+    "id" SERIAL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL,
     "time_to_kill" INT NOT NULL,
-    "quantity" INT NOT NULL,
-    PRIMARY KEY("id")
+    "quantity" INT NOT NULL
 );
 
 CREATE TABLE "Prices"(
-    "id" INT IDENTITY(1,1) NOT NULL,
+    "id" SERIAL PRIMARY KEY,
     "price" DECIMAL(8, 2) NOT NULL,
     "start_date" DATE NOT NULL,
     "end_date" DATE NULL,
-    "bean_id" INT NOT NULL,
-    PRIMARY KEY("id")
+    "bean_id" INT NOT NULL
 );
 
 CREATE TABLE "Agents"(
-    "id" INT IDENTITY(1,1) NOT NULL,
+    "id" SERIAL PRIMARY KEY,
     "alias" VARCHAR(255) NOT NULL,
     "firstname" VARCHAR(255) NOT NULL,
-    "lastname" VARCHAR(255) NOT NULL,
-    PRIMARY KEY("id")
+    "lastname" VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE "Addresses"(
-    "id" INT IDENTITY(1,1) NOT NULL,
+    "id" SERIAL PRIMARY KEY,
     "street_address" VARCHAR(255) NOT NULL,
     "suburb" VARCHAR(255) NOT NULL,
-    "city" VARCHAR(255) NOT NULL,
-    PRIMARY KEY("id")
+    "city" VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE "Customers"(
-    "id" INT IDENTITY(1,1) NOT NULL,
-    "alias" VARCHAR(255) NOT NULL,
-    PRIMARY KEY("id")
+    "id" SERIAL PRIMARY KEY,
+    "alias" VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE "AgentPhoneNumbers"(
-    "id" INT IDENTITY(1,1) NOT NULL,
+    "id" SERIAL PRIMARY KEY,
     "agent_id" INT NOT NULL,
-    "phone_number" VARCHAR(255) NOT NULL,
-    PRIMARY KEY("id")
+    "phone_number" VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE "Statuses"(
-    "id" INT IDENTITY(1,1) NOT NULL,
-    "status" VARCHAR(255) NOT NULL,
-    PRIMARY KEY("id")
+    "id" SERIAL PRIMARY KEY,
+    "status" VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE "OrderLines"(
-    "id" INT IDENTITY(1,1) NOT NULL,
+    "id" SERIAL PRIMARY KEY,
     "order_id" INT NOT NULL,
     "bean_id" INT NOT NULL,
-    "quantity" INT NOT NULL,
-    PRIMARY KEY("id")
+    "quantity" INT NOT NULL
 );
 
 CREATE TABLE "Orders"(
-    "id" INT IDENTITY(1,1) NOT NULL,
+    "id" SERIAL PRIMARY KEY,
     "customer_id" INT NOT NULL,
-    "date_time" DATETIME NOT NULL,
+    "date_time" TIMESTAMP NOT NULL,
     "address_id" INT NOT NULL,
     "status_id" INT NOT NULL,
-    "agent_id" INT NULL,
-    PRIMARY KEY("id")
+    "agent_id" INT NULL
 );
 
 CREATE TABLE "CustomerPhoneNumbers"(
-    "id" INT IDENTITY(1,1) NOT NULL,
+    "id" SERIAL PRIMARY KEY,
     "customer_id" INT NOT NULL,
-    "phone_number" VARCHAR(255) NOT NULL,
-    PRIMARY KEY("id")
+    "phone_number" VARCHAR(255) NOT NULL
 );
