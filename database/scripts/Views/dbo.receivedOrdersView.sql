@@ -1,4 +1,4 @@
-CREATE OR ALTER VIEW DeliveryDetailsView AS
+CREATE OR REPLACE VIEW DeliveryDetailsView AS
 SELECT
     a.street_address,
     a.suburb,

@@ -1,4 +1,4 @@
-CREATE OR ALTER VIEW trackOrdersView AS
+CREATE OR REPLACE VIEW trackOrdersView AS
 SELECT
     o.id AS order_id,
     o.customer_id,
