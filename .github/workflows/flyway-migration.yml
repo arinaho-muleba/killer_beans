@@ -6,7 +6,7 @@ on:
     paths:
       - 'src/database/flyway/scripts/**'
 
-  workflow_dispatch:
+workflow_dispatch:
 
 jobs:
   test-migrations:
@@ -17,9 +17,11 @@ jobs:
         uses: actions/checkout@v3
       - name: Update
         run: sudo apt update
-      - name: install snapd
+      - name: Install snapd
         run: sudo apt install snapd
-      - name: Install Flyway 
+      - name: Install Flyway
         run: sudo snap install flyway
-      - name: Run flyway
-        run: flyway migrate -password=${{ secrets.DB_PASSWORD }} -configFile=flyway.conf
+      - name: Copy Flyway Configuration
+        run: cp flyway.conf $HOME
+      - name: Run Flyway
+        run: flyway migrate -password=${{ secrets.DB_PASSWORD }} -configFile=$HOME/flyway.conf
