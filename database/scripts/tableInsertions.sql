@@ -1,12 +1,12 @@
 -- Beans table
 INSERT INTO "Beans" ("name", "time_to_kill", "quantity") VALUES
 ('Castor Beans', 3, 100),
-('Lima Beans', 2, 50),
-('Jequirity Beans', 1, 75),
-('Velvet Beans', 1, 30),
-('Lupin Beans', 1, 20),
-('Raw Kidney Beans', 2, 15),
-('Ignatius Beans', 1, 10),
+('Lima Beans', 1, 50),
+('Jequirity Beans', 2, 75),
+('Velvet Beans', 4, 30),
+('Lupin Beans', 7, 20),
+('Raw Kidney Beans', 10, 15),
+('Ignatius Beans', 9, 10),
 ('Lucky Beans', 1, 25);
 
 -- Prices table
