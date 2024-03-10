@@ -1,9 +1,9 @@
-CREATE OR REPLACE VIEW BeanPricesView AS
+CREATE OR REPLACE VIEW "BeanPricesView" AS
 SELECT
-    b.name AS bean_name,
+    b."name" AS bean_name,
     p.price AS bean_price,
     b.id
 FROM
-    Beans b
+    "Beans" b
 INNER JOIN
-    Prices p ON b.id = p.bean_id;
+    "Prices" p ON b.id = p.bean_id;

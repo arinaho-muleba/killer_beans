@@ -1,89 +1,87 @@
-CREATE OR ALTER PROCEDURE placeOrderProcedure
-    @street_address VARCHAR(255),
-    @suburb VARCHAR(255),
-    @city VARCHAR(255),
-    @customer_id INT,
-    @items VARCHAR(MAX),
-    @quantities VARCHAR(MAX)
-AS
+CREATE OR REPLACE PROCEDURE placeOrderProcedure(
+    IN street_address VARCHAR(255),
+    IN suburb VARCHAR(255),
+    IN city VARCHAR(255),
+    IN customer_id INT,
+    IN items TEXT,
+    IN quantities TEXT
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    addressId INT;
+    orderId INT;
+    itemId INT;
+    itemQuantity INT;
+    itemList TEXT;
+    quantityList TEXT;
+    dateTime TIMESTAMP;
 BEGIN
-    SET NOCOUNT ON;
+    -- Set NOCOUNT equivalent in PostgreSQL
+    PERFORM NULL;
 
-    BEGIN TRY
-        BEGIN TRANSACTION;
+    -- Start transaction
+    --BEGIN;
+    
+    -- Insert into Addresses table
+    INSERT INTO "Addresses" ("street_address", "suburb", "city")
+    VALUES (street_address, suburb, city)
+    RETURNING "id" INTO addressId;
 
-        -- Insert into Addresses table
-        INSERT INTO Addresses (street_address, suburb, city)
-        VALUES (@street_address, @suburb, @city);
+    -- Create an order in the Orders table
+    SELECT NOW() INTO dateTime;
 
-        -- Get the recent addressId
-        DECLARE @addressId INT;
-        SET @addressId = SCOPE_IDENTITY();
+    INSERT INTO "Orders" ("customer_id", "date_time", "address_id", "status_id", "agent_id")
+    VALUES (customer_id, dateTime, addressId, 1, NULL)
+    RETURNING "id" INTO orderId;
 
-        -- Create an order in the Orders table
-        DECLARE @dateTime DATETIME;
-        SET @dateTime = GETDATE();
+    -- Populate OrderLines
+    itemList := items;
+    quantityList := quantities;
 
-        INSERT INTO Orders (customer_id, date_time, address_id, status_id, agent_id)
-        VALUES (@customer_id, @dateTime, @addressId, 1, NULL);
+    WHILE LENGTH(itemList) > 0 AND LENGTH(quantityList) > 0 LOOP
+        itemId := NULL;
+        itemQuantity := NULL;
 
-        -- Get the recent orderId
-        DECLARE @orderId INT;
-        SET @orderId = SCOPE_IDENTITY();
+        -- Parse item ID
+        IF POSITION(',' IN itemList) > 0 THEN
+            itemId := CAST(SUBSTRING(itemList FROM 1 FOR POSITION(',' IN itemList) - 1) AS INT);
+            itemList := SUBSTRING(itemList FROM POSITION(',' IN itemList) + 1);
+        ELSE
+            itemId := CAST(itemList AS INT);
+            itemList := '';
+        END IF;
 
-        -- Populate OrderLines
-        DECLARE @itemId INT;
-        DECLARE @quantity INT;
-        DECLARE @itemList VARCHAR(MAX);
-        DECLARE @quantityList VARCHAR(MAX);
-        SET @itemList = @items;
-        SET @quantityList = @quantities;
+        -- Parse quantity
+        IF POSITION(',' IN quantityList) > 0 THEN
+            itemQuantity := CAST(SUBSTRING(quantityList FROM 1 FOR POSITION(',' IN quantityList) - 1) AS INT);
+            quantityList := SUBSTRING(quantityList FROM POSITION(',' IN quantityList) + 1);
+        ELSE
+            itemQuantity := CAST(quantityList AS INT);
+            quantityList := '';
+        END IF;
 
-        WHILE LEN(@itemList) > 0 AND LEN(@quantityList) > 0
-        BEGIN
-            SET @itemId = NULL;
-            SET @quantity = NULL;
+        -- Insert into OrderLines table
+        INSERT INTO "OrderLines" ("order_id", "bean_id", "quantity")
+        VALUES (orderId, itemId, itemQuantity);
 
-            -- Parse item ID
-            IF CHARINDEX(',', @itemList) > 0
-            BEGIN
-                SET @itemId = CAST(LEFT(@itemList, CHARINDEX(',', @itemList) - 1) AS INT);
-                SET @itemList = RIGHT(@itemList, LEN(@itemList) - CHARINDEX(',', @itemList) - 1);
-            END
-            ELSE
-            BEGIN
-                SET @itemId = CAST(@itemList AS INT);
-                SET @itemList = '';
-            END
+        -- Update the Beans table to reduce quantity
+        UPDATE "Beans"
+        SET "quantity" = "quantity" - itemQuantity
+        WHERE "id" = itemId;
 
-            -- Parse quantity
-            IF CHARINDEX(',', @quantityList) > 0
-            BEGIN
-                SET @quantity = CAST(LEFT(@quantityList, CHARINDEX(',', @quantityList) - 1) AS INT);
-                SET @quantityList = RIGHT(@quantityList, LEN(@quantityList) - CHARINDEX(',', @quantityList) - 1);
-            END
-            ELSE
-            BEGIN
-                SET @quantity = CAST(@quantityList AS INT);
-                SET @quantityList = '';
-            END
+    END LOOP;
 
-            -- Insert into OrderLines table
-            INSERT INTO OrderLines (order_id, bean_id, quantity)
-            VALUES (@orderId, @itemId, @quantity);
-
-            -- Update the Beans table to reduce stockQuantity
-            UPDATE Beans
-            SET quantity = quantity - @quantity
-            WHERE id = @itemId;
-        END;
-
-        COMMIT TRANSACTION;
-    END TRY
-    BEGIN CATCH
-        IF @@TRANCOUNT > 0
-            ROLLBACK TRANSACTION;
-
-        THROW;
-    END CATCH;
+    -- Commit transaction
+    --COMMIT;
+    
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Rollback transaction
+        IF FOUND THEN
+            --ROLLBACK;
+        END IF;
+        -- Raise the error
+        RAISE;
 END;
+$$;
