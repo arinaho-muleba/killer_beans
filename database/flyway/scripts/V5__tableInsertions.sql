@@ -1,5 +1,5 @@
 -- Beans table
-INSERT INTO "Beans" ("name", "time_to_kill", "quantity") VALUES
+INSERT INTO beans ("name", "time_to_kill", "quantity") VALUES
 ('Castor Beans', 3, 100),
 ('Lima Beans', 1, 50),
 ('Jequirity Beans', 2, 75),
@@ -10,7 +10,7 @@ INSERT INTO "Beans" ("name", "time_to_kill", "quantity") VALUES
 ('Lucky Beans', 1, 25);
 
 -- Prices table
-INSERT INTO "Prices" ("price", "start_date", "end_date", "bean_id") VALUES
+INSERT INTO prices ("price", "start_date", "end_date", "bean_id") VALUES
 (120.00, '2023-11-10', NULL, 1),
 (70.00, '2023-11-25', NULL, 4),
 (100.00, '2023-12-05', NULL, 2),
@@ -21,7 +21,7 @@ INSERT INTO "Prices" ("price", "start_date", "end_date", "bean_id") VALUES
 (60.00, '2024-03-15', NULL, 8);
 
 -- Agents table
-INSERT INTO "Agents" ("alias", "firstname", "lastname") VALUES
+INSERT INTO agents ("alias", "firstname", "lastname") VALUES
 ('Sipho', 'John', 'Doe'),
 ('Emily', 'Thabo', 'Mthembu'),
 ('Alexander', 'Michael', 'Johnson'),
@@ -32,7 +32,7 @@ INSERT INTO "Agents" ("alias", "firstname", "lastname") VALUES
 ('Charlotte', 'Zanele', 'Molefe');
 
 -- Addresses table
-INSERT INTO "Addresses" ("street_address", "suburb", "city") VALUES
+INSERT INTO addresses ("street_address", "suburb", "city") VALUES
 ('123 Main St', 'Downtown', 'Metropolis'),
 ('456 Elm St', 'Uptown', 'Gotham'),
 ('789 Oak St', 'Midtown', 'Central City'),
@@ -42,7 +42,7 @@ INSERT INTO "Addresses" ("street_address", "suburb", "city") VALUES
 ('789 Maple St', 'Hillside', 'Randburg');
 
 -- Customers table
-INSERT INTO "Customers" ("alias") VALUES
+INSERT INTO customers ("alias") VALUES
 ('Sbu'),
 ('Thandi'),
 ('Bongi'),
@@ -53,7 +53,7 @@ INSERT INTO "Customers" ("alias") VALUES
 ('Tumi');
 
 -- AgentPhoneNumbers table
-INSERT INTO "AgentPhoneNumbers" ("agent_id", "phone_number") VALUES
+INSERT INTO agentPhoneNumbers ("agent_id", "phone_number") VALUES
 (1, '0823456789'),
 (2, '0734567890'),
 (3, '0812345678'),
@@ -64,14 +64,14 @@ INSERT INTO "AgentPhoneNumbers" ("agent_id", "phone_number") VALUES
 (8, '0839876543');
 
 -- Statuses table
-INSERT INTO "Statuses" ("status") VALUES
+INSERT INTO statuses ("status") VALUES
 ('Received'),
 ('Assigned to agent'),
 ('In Transit'),
 ('Delivered');
 
 -- Orders table
-INSERT INTO "Orders" ("customer_id", "date_time", "address_id", "status_id", "agent_id") VALUES
+INSERT INTO orders ("customer_id", "date_time", "address_id", "status_id", "agent_id") VALUES
 (1, '2023-09-16 08:30:47', 1, 4, 4),
 (2, '2023-10-25 11:45:23', 2, 4, 5),
 (3, '2023-11-21 14:15:59', 3, 4, 3),
@@ -81,7 +81,7 @@ INSERT INTO "Orders" ("customer_id", "date_time", "address_id", "status_id", "ag
 (7, '2024-03-14 16:00:45', 7, 1, NULL);
 
 -- OrderLines table
-INSERT INTO "OrderLines" ("order_id", "bean_id", "quantity") VALUES
+INSERT INTO orderLines ("order_id", "bean_id", "quantity") VALUES
 (1, 1, 5),
 (1, 2, 10),
 (2, 3, 3),
@@ -97,7 +97,7 @@ INSERT INTO "OrderLines" ("order_id", "bean_id", "quantity") VALUES
 (7, 6, 2);
 
 -- CustomerPhoneNumbers table
-INSERT INTO "CustomerPhoneNumbers" ("customer_id", "phone_number") VALUES
+INSERT INTO customerPhoneNumbers ("customer_id", "phone_number") VALUES
 (1, '0823456789'),
 (2, '0734567890'),
 (3, '0812345678'),
