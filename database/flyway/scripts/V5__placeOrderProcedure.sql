@@ -1,4 +1,4 @@
-CREATE OR REPLACE PROCEDURE "placeOrderProcedure"(
+CREATE OR REPLACE PROCEDURE "place_order_procedure"(
     IN street_address VARCHAR(255),
     IN suburb VARCHAR(255),
     IN city VARCHAR(255),
@@ -9,13 +9,13 @@ CREATE OR REPLACE PROCEDURE "placeOrderProcedure"(
 LANGUAGE plpgsql
 AS $$
 DECLARE
-    addressId INT;
-    orderId INT;
-    itemId INT;
-    itemQuantity INT;
-    itemList TEXT;
-    quantityList TEXT;
-    dateTime TIMESTAMP;
+    address_id INT;
+    order_id INT;
+    item_id INT;
+    item_quantity INT;
+    item_list TEXT;
+    quantity_list TEXT;
+    date_time TIMESTAMP;
 BEGIN
     -- Set NOCOUNT equivalent in PostgreSQL
     PERFORM NULL;
@@ -24,51 +24,51 @@ BEGIN
     --BEGIN;
     
     -- Insert into Addresses table
-    INSERT INTO "Addresses" ("street_address", "suburb", "city")
+    INSERT INTO "addresses" ("street_address", "suburb", "city")
     VALUES (street_address, suburb, city)
-    RETURNING "id" INTO addressId;
+    RETURNING "id" INTO address_id;
 
     -- Create an order in the Orders table
-    SELECT NOW() INTO dateTime;
+    SELECT NOW() INTO date_time;
 
-    INSERT INTO "Orders" ("customer_id", "date_time", "address_id", "status_id", "agent_id")
-    VALUES (customer_id, dateTime, addressId, 1, NULL)
-    RETURNING "id" INTO orderId;
+    INSERT INTO "orders" ("customer_id", "date_time", "address_id", "status_id", "agent_id")
+    VALUES (customer_id, date_time, address_id, 1, NULL)
+    RETURNING "id" INTO order_id;
 
     -- Populate OrderLines
-    itemList := items;
-    quantityList := quantities;
+    item_list := items;
+    quantity_list := quantities;
 
-    WHILE LENGTH(itemList) > 0 AND LENGTH(quantityList) > 0 LOOP
-        itemId := NULL;
-        itemQuantity := NULL;
+    WHILE LENGTH(item_list) > 0 AND LENGTH(quantity_list) > 0 LOOP
+        item_id := NULL;
+        item_quantity := NULL;
 
         -- Parse item ID
-        IF POSITION(',' IN itemList) > 0 THEN
-            itemId := CAST(SUBSTRING(itemList FROM 1 FOR POSITION(',' IN itemList) - 1) AS INT);
-            itemList := SUBSTRING(itemList FROM POSITION(',' IN itemList) + 1);
+        IF POSITION(',' IN item_list) > 0 THEN
+            item_id := CAST(SUBSTRING(item_list FROM 1 FOR POSITION(',' IN item_list) - 1) AS INT);
+            item_list := SUBSTRING(item_list FROM POSITION(',' IN item_list) + 1);
         ELSE
-            itemId := CAST(itemList AS INT);
-            itemList := '';
+            item_id := CAST(item_list AS INT);
+            item_list := '';
         END IF;
 
         -- Parse quantity
-        IF POSITION(',' IN quantityList) > 0 THEN
-            itemQuantity := CAST(SUBSTRING(quantityList FROM 1 FOR POSITION(',' IN quantityList) - 1) AS INT);
-            quantityList := SUBSTRING(quantityList FROM POSITION(',' IN quantityList) + 1);
+        IF POSITION(',' IN quantity_list) > 0 THEN
+            item_quantity := CAST(SUBSTRING(quantity_list FROM 1 FOR POSITION(',' IN quantity_list) - 1) AS INT);
+            quantity_list := SUBSTRING(quantity_list FROM POSITION(',' IN quantity_list) + 1);
         ELSE
-            itemQuantity := CAST(quantityList AS INT);
-            quantityList := '';
+            item_quantity := CAST(quantity_list AS INT);
+            quantity_list := '';
         END IF;
 
         -- Insert into OrderLines table
-        INSERT INTO "OrderLines" ("order_id", "bean_id", "quantity")
-        VALUES (orderId, itemId, itemQuantity);
+        INSERT INTO "order_lines" ("order_id", "bean_id", "quantity")
+        VALUES (order_id, item_id, item_quantity);
 
         -- Update the Beans table to reduce quantity
-        UPDATE "Beans"
-        SET "quantity" = "quantity" - itemQuantity
-        WHERE "id" = itemId;
+        UPDATE "beans"
+        SET "quantity" = "quantity" - item_quantity
+        WHERE "id" = item_id;
 
     END LOOP;
 

@@ -1,13 +1,13 @@
-CREATE OR REPLACE VIEW "OrderItemsView" AS
+CREATE OR REPLACE VIEW "order_items_view" AS
 SELECT
     ol.order_id,
     ol.quantity,
     b.name AS bean_name,
     COUNT(ol.id) AS item_count
 FROM
-    "OrderLines" ol
+    "order_lines" ol
 INNER JOIN
-    "Beans" b ON ol.bean_id = b.id
+    "beans" b ON ol.bean_id = b.id
 GROUP BY
     ol.order_id,
     ol.quantity,

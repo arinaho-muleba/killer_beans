@@ -1,22 +1,22 @@
-CREATE OR REPLACE VIEW "DeliveryDetailsView" AS
+CREATE OR REPLACE VIEW "delivery_details_view" AS
 SELECT
     a.street_address,
     a.suburb,
     a.city,
     c.alias AS customer_alias,
-    cp.phone_number AS contactNumber,
-    o.id AS Order_Id,
-    COUNT(ol.id) AS NumberOfItems
+    cp.phone_number AS contact_number,
+    o.id AS order_id,
+    COUNT(ol.id) AS number_of_items
 FROM
-    "Addresses" a
+    "addresses" a
 INNER JOIN
-    "Orders" o ON o.address_id = a.id
+    "orders" o ON o.address_id = a.id
 INNER JOIN
-    "Customers" c ON o.customer_id = c.id
+    "customers" c ON o.customer_id = c.id
 INNER JOIN
-    "CustomerPhoneNumbers" cp ON cp.customer_id = c.id
+    "customer_phone_numbers" cp ON cp.customer_id = c.id
 INNER JOIN
-    "OrderLines" ol ON o.id = ol.order_id
+    "order_lines" ol ON o.id = ol.order_id
 GROUP BY
     a.street_address,
     a.suburb,
