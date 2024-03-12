@@ -19,4 +19,7 @@ public class BeanService {
     public List<Bean> getAllBeans(){
         return beanRepository.findAll();
     }
+    public List<Bean> getBeansByTimeToKillRange(int minTimeToKill, int maxTimeToKill) {
+        return beanRepository.findByTimeToKillBetween(minTimeToKill, maxTimeToKill);
+    }
 }
