@@ -18,5 +18,61 @@ public class Bean {
     @Column(name = "quantity")
     private int quantity;
 
+    public Bean() {
+    }
 
+    public Bean(Long id, String name, int timeToKill, int quantity) {
+        this.id = id;
+        this.name = name;
+        this.timeToKill = timeToKill;
+        this.quantity = quantity;
+    }
+
+    public Bean(String name, int timeToKill, int quantity) {
+        this.name = name;
+        this.timeToKill = timeToKill;
+        this.quantity = quantity;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getTimeToKill() {
+        return timeToKill;
+    }
+
+    public void setTimeToKill(int timeToKill) {
+        this.timeToKill = timeToKill;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Bean{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", timeToKill=" + timeToKill +
+                ", quantity=" + quantity +
+                '}';
+    }
 }
