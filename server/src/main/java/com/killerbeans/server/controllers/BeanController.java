@@ -1,7 +1,9 @@
 package com.killerbeans.server.controllers;
 
 import com.killerbeans.server.models.Bean;
+import com.killerbeans.server.models.dtos.PricedBean;
 import com.killerbeans.server.services.BeanService;
+import com.killerbeans.server.services.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,15 +18,19 @@ import java.util.List;
 public class BeanController {
 
     private final BeanService beanService;
+    private  final PriceService priceService;
 
     @Autowired
-    public BeanController(BeanService beanService){
+    public BeanController(BeanService beanService, PriceService priceService){
         this.beanService = beanService;
+        this.priceService = priceService;
     }
+    @Autowired
+
 
     @GetMapping
     public List<Bean> getAllBeans(){
-        return  beanService.getAllBeans();
+        return beanService.getAllBeans();
     }
 
     @GetMapping("/getByTimeToKillRange")

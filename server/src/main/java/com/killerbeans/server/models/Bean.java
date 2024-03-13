@@ -1,6 +1,8 @@
 package com.killerbeans.server.models;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "Beans")
 public class Bean {
@@ -17,6 +19,23 @@ public class Bean {
 
     @Column(name = "quantity")
     private int quantity;
+
+    @Transient
+    private BigDecimal currentPrice;
+
+    // Constructor, getters, and setters...
+
+    public BigDecimal getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(BigDecimal currentPrice) {
+        this.currentPrice = currentPrice;
+    }
+
+    public void setCurrentPrice(Price price) {
+        this.currentPrice = price.getPrice();
+    }
 
     public Bean() {
     }
