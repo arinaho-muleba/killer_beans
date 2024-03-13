@@ -8,18 +8,15 @@ import org.springframework.shell.standard.ShellOption;
 
 @ShellComponent
 public class WelcomeCommands {
-    //THIS IS JUST A TEST CLASS
 
-    private String username;
-
+//THIS IS JUST A TEST CLASS
     @ShellMethod(key = "hello",value="We will welcome you")
     public String welcome(@ShellOption(defaultValue = "Stranger") String name){
-        username = name;
         return "Welcome to Killer Beans " + name;
     }
     @ShellMethod(key="goodbye",value="We will bid you goodbye")
     public String goodbye(){
-        return "Goodbye " + username;
+        return "Goodbye";
     }
 
     @ShellMethodAvailability({"hello", "goodbye"})
