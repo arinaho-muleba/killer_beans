@@ -48,7 +48,7 @@ public class OrderController {
         return orderService.getOrdersByAgentId(agentId);
     }
 
-    @GetMapping("{userId}")
+    @GetMapping("/byUser/{userId}")
     public List<Order> getOrdersByUserId(@PathVariable Long userId) {
         return orderService.getOrdersByUserId(userId);
     }
