@@ -46,7 +46,6 @@ public class OrderLineController {
 
     @GetMapping("/byOrder/{orderId}")
     public List<OrderLine> getOrderLinesByOrderId(@PathVariable Long orderId) {
-        Order order = orderRepository.getById(orderId);
                 List <OrderLine> orderLines = orderLineService.getOrderLinesByOrderId(orderId);
         for (OrderLine orderLine : orderLines) {
             Optional<Price> currentPrice = priceRepository.findCurrentPriceByBeanId(orderLine.getBean().getId());

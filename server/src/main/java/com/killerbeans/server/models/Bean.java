@@ -33,9 +33,9 @@ public class Bean {
         return currentPrice;
     }
 
-    public void setCurrentPrice(BigDecimal currentPrice) {
-        this.currentPrice = currentPrice;
-    }
+//    public void setCurrentPrice(BigDecimal currentPrice) {
+//        this.currentPrice = currentPrice;
+//    }
 
     public void setCurrentPrice(Price price) {
         this.currentPrice = price.getPrice();
