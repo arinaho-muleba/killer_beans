@@ -15,7 +15,7 @@ public class HomeCommands {
 
 
     @ShellMethod(key="order-beans",value="The ordering process will be initiatied")
-    public String OrderBeans(@ShellOption(defaultValue = "Stranger") String name){
+    public String OrderBeans(/*@ShellOption(defaultValue = "Stranger") String name*/){
 
         periods = new ArrayList<>();
 
