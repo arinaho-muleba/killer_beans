@@ -26,7 +26,6 @@ public class Price {
     private Integer beanId;
 
     // Constructors, getters, and setters
-    // Constructor(s)
     public Price() {
     }
 
