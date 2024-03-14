@@ -1,15 +1,12 @@
 package com.killerbeans.server.controllers;
 
 import com.killerbeans.server.models.Bean;
-import com.killerbeans.server.models.dtos.PricedBean;
 import com.killerbeans.server.services.BeanService;
 import com.killerbeans.server.services.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,6 +35,16 @@ public class BeanController {
             @RequestParam("minTimeToKill") int minTimeToKill,
             @RequestParam("maxTimeToKill") int maxTimeToKill) {
         return beanService.getBeansByTimeToKillRange(minTimeToKill, maxTimeToKill);
+    }
+
+    @GetMapping("/timeToKill/{minTimeToKill}")
+    public ResponseEntity<List<Bean>> getBeansByMinTimeToKill(@PathVariable int minTimeToKill) {
+        List<Bean> beans = beanService.getBeansByMinTimeToKill(minTimeToKill);
+        if (beans.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(beans, HttpStatus.OK);
+        }
     }
 
 
