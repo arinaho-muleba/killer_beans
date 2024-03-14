@@ -1,17 +1,33 @@
 package com.killerbean.shell.commands;
 
+import com.killerbean.shell.Helpers.Requests;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.function.Function;
 
 @ShellComponent
 public class HomeCommands {
+    @Autowired
+    private HttpServletRequest request;
+    private RestTemplate restTemplate;
 
+    public HomeCommands() {
+        this.restTemplate = new RestTemplate();
+    }
     private static final Map<Integer, String> CONFIRMATION = new HashMap<>();
     static {
         CONFIRMATION.put(1, "Yes");
@@ -253,6 +269,33 @@ public class HomeCommands {
     public String checkOrders(){
         System.out.println( "Here are your orders:\n");
         showOrders();
+        return "\n";
+    }
+
+    @ShellMethod(key="send",value="we display any orders made")
+    public String testRequest() throws URISyntaxException {
+        String apiUrl = "http://localhost:3000/api/v1/bean/test";
+        //ResponseEntity<String> response = restTemplate.getForEntity(apiUrl, String.class);
+        // Create HttpHeaders and add the Cookie header
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.SET_COOKIE, Requests.SESSION_TOKEN);
+        headers.add(HttpHeaders.COOKIE, Requests.SESSION_TOKEN);
+        headers.add(HttpHeaders.AUTHORIZATION, Requests.SESSION_TOKEN);
+
+        // Create a RequestEntity with the headers and HttpMethod.GET
+        URI uri = new URI(apiUrl);
+        RequestEntity<Void> requestEntity = new RequestEntity<>(headers, HttpMethod.GET, uri);
+        System.out.println(requestEntity.getHeaders());
+        // Send the request and retrieve the response
+        ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            String responseBody = response.getBody();
+            // Process the response
+            System.out.println("API response: " + responseBody);
+        } else {
+            System.err.println("Failed to fetch data from API. Status code: " + response.getStatusCodeValue());
+        }
         return "\n";
     }
     @ShellMethodAvailability({"order-beans", "check-orders"})
