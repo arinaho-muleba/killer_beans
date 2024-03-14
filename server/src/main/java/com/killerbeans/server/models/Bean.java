@@ -2,6 +2,7 @@ package com.killerbeans.server.models;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "Beans")
@@ -20,8 +21,11 @@ public class Bean {
     @Column(name = "quantity")
     private int quantity;
 
+    @OneToMany(mappedBy = "bean")
+    private List<OrderLine> orderLines;
     @Transient
     private BigDecimal currentPrice;
+
 
     // Constructor, getters, and setters...
 

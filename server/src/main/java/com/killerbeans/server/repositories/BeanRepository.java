@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface BeanRepository extends JpaRepository<Bean, Long> {
     List<Bean> findByTimeToKillBetween(int minTimeToKill, int maxTimeToKill);
+    List<Bean> findByTimeToKill(int ttk);
 }

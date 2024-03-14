@@ -1,60 +1,63 @@
 package com.killerbeans.server.models;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
 public class Order {
 
-    public Order(Long id, Long customerId, LocalDateTime dateTime, Long addressId, Long statusId, Long agentId) {
-        this.id = id;
-        this.customerId = customerId;
-        this.dateTime = dateTime;
-        this.addressId = addressId;
-        this.statusId = statusId;
-        this.agentId = agentId;
-    }
-
-    public Order(Long customerId, LocalDateTime dateTime, Long addressId, Long statusId, Long agentId) {
-        this.customerId = customerId;
-        this.dateTime = dateTime;
-        this.addressId = addressId;
-        this.statusId = statusId;
-        this.agentId = agentId;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "customer_id")
-    private Long customerId;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
 
-    @Column(name = "address_id", nullable = false)
-    private Long addressId;
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 
-    @Column(name = "status_id", nullable = false)
-    private Long statusId;
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private Status status;
 
-    @Column(name = "agent_id")
-    private Long agentId;
+    @ManyToOne
+    @JoinColumn(name = "agent_id")
+    private Agent agent;
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", customerId=" + customerId +
-                ", dateTime=" + dateTime +
-                ", addressId=" + addressId +
-                ", statusId=" + statusId +
-                ", agentId=" + agentId +
-                '}';
-    }
+    @OneToMany(mappedBy = "order")
+    @JsonIgnore
+    private List<OrderLine> orderLines;
+
+    // Constructors, getters, and setters
 
     public Order() {
+    }
+
+    public Order(Customer customer, LocalDateTime dateTime, Address address, Status status, Agent agent, List<OrderLine> orderLines) {
+        this.customer = customer;
+        this.dateTime = dateTime;
+        this.address = address;
+        this.status = status;
+        this.agent = agent;
+        this.orderLines = orderLines;
+    }
+
+    public Order(Long id, Customer customer, LocalDateTime dateTime, Address address, Status status, Agent agent, List<OrderLine> orderLines) {
+        this.id = id;
+        this.customer = customer;
+        this.dateTime = dateTime;
+        this.address = address;
+        this.status = status;
+        this.agent = agent;
+        this.orderLines = orderLines;
     }
 
     public Long getId() {
@@ -65,12 +68,12 @@ public class Order {
         this.id = id;
     }
 
-    public Long getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public LocalDateTime getDateTime() {
@@ -81,27 +84,35 @@ public class Order {
         this.dateTime = dateTime;
     }
 
-    public Long getAddressId() {
-        return addressId;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddressId(Long addressId) {
-        this.addressId = addressId;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
-    public Long getStatusId() {
-        return statusId;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    public Long getAgentId() {
-        return agentId;
+    public Agent getAgent() {
+        return agent;
     }
 
-    public void setAgentId(Long agentId) {
-        this.agentId = agentId;
+    public void setAgent(Agent agent) {
+        this.agent = agent;
+    }
+
+    public List<OrderLine> getOrderLines() {
+        return orderLines;
+    }
+
+    public void setOrderLines(List<OrderLine> orderLines) {
+        this.orderLines = orderLines;
     }
 }
