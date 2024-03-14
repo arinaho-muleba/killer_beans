@@ -12,12 +12,44 @@ import java.util.Scanner;
 @ShellComponent
 public class AgentCommand {
     private static final String ORDERS_API_URL = "http://your-api-url/orders";
+    private static final String MY_ORDERS_API_URL = "http://your-api-url/orders";
     private Map<Integer, Integer> indexToOrderIdMap = new HashMap<>();
 
-    @ShellMethod(key="list-orders", value="List available orders from the API.")
-    public void listOrders() {
+    @ShellMethod(key="get-orders", value="List available orders from the API.")
+    public void getOrders() {
         RestTemplate restTemplate = new RestTemplate();
         List<Map<String, Object>> orders = restTemplate.getForObject(ORDERS_API_URL, List.class);
+
+        if (orders == null || orders.isEmpty()) {
+            System.out.println("No orders available.");
+        } else {
+            System.out.println("Available Orders:");
+            int index = 1;
+            for (Map<String, Object> order : orders) {
+                int orderId = (int) order.get("id");
+                indexToOrderIdMap.put(index, orderId);
+
+                String customerPhoneNumber = (String) order.get("customerPhoneNumber");
+                String dateTime = (String) order.get("dateTime");
+                String address = (String) order.get("address");
+
+                System.out.println("Order Index: " + index);
+                System.out.println("Customer Phone Number: " + customerPhoneNumber);
+                System.out.println("Date Time: " + dateTime);
+                System.out.println("Address: " + address);
+                System.out.println();
+
+                index++;
+            }
+
+            selectOrder(index);
+        }
+    }
+
+    @ShellMethod(key="my-orders", value="List available orders from the API.")
+    public void myOrders() {
+        RestTemplate restTemplate = new RestTemplate();
+        List<Map<String, Object>> orders = restTemplate.getForObject(MY_ORDERS_API_URL, List.class);
 
         if (orders == null || orders.isEmpty()) {
             System.out.println("No orders available.");
@@ -80,7 +112,7 @@ public class AgentCommand {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.put(updateStatusUrl + "?orderId=" + orderId, null);
 
-        System.out.println("Order status updated to 'Assigned to Agent' for order Number: " + selectedIndex);
+        System.out.println("Order status updated for order Number: " + selectedIndex);
     }
 
 }
