@@ -14,13 +14,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name:check JDK version
-      working-directory: server
-      run: java -version
-
     - name: Build with Maven
       working-directory: server
-      run: mvn -B package --file pom.xml
+      run: java -version
+      # run: mvn -B package --file pom.xml
 
   deploy:
     runs-on: ubuntu-latest
