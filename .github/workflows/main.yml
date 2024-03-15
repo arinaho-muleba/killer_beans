@@ -17,6 +17,9 @@ jobs:
     - name: Navigate to Spring app directory
       run: cd server
 
+    - name: List things
+      run: ls
+
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
