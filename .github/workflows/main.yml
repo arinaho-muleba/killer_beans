@@ -14,16 +14,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Navigate to Spring app directory
-      run: cd server
-
-    - name: List things
-      run: ls
-
-    - name: Navigate to Spring app directory
-      run: cd server
-
     - name: Build with Maven
+      working-directory: server
       run: mvn -B package --file pom.xml
 
   deploy:
