@@ -2,19 +2,13 @@ package com.killerbean.shell.commands;
 
 import com.killerbean.shell.Helpers.ApiRequestHandler;
 import com.killerbean.shell.Helpers.Requests;
-import com.killerbean.shell.models.SignUpModel;
+import com.killerbean.shell.model.SignUpModel;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellOption;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 
-import java.awt.*;
-import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Scanner;
 
