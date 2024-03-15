@@ -11,8 +11,8 @@ import java.util.Scanner;
 
 @ShellComponent
 public class AgentCommand {
-    private static final String ORDERS_API_URL = "http://your-api-url/orders";
-    private static final String MY_ORDERS_API_URL = "http://your-api-url/orders";
+    private static final String ORDERS_API_URL = "http://localhost:8080/api/v1/orders/7/assignAgent";
+    private static final String MY_ORDERS_API_URL = "http://localhost:8080/api/v1/orders/byUser/1";
     private Map<Integer, Integer> indexToOrderIdMap = new HashMap<>();
 
     @ShellMethod(key="get-orders", value="List available orders from the API.")
@@ -108,7 +108,7 @@ public class AgentCommand {
 
         // Make a call to your API to update the order status to "Assigned to Agent" using the order ID
         // You need to replace "your-api-url" with the actual URL of your API
-        String updateStatusUrl = "http://your-api-url/update-status";
+        String updateStatusUrl = "http://localhost:8080/api/v1/orders/9/progressOrder";
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.put(updateStatusUrl + "?orderId=" + orderId, null);
 
