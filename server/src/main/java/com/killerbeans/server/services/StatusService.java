@@ -16,12 +16,13 @@ public class StatusService {
         this.statusRepository = statusRepository;
     }
 
-    Optional<Status> getStatusById(Long id){
-        return statusRepository.findById(id);
+    Status getStatusById(Long id){
+        return statusRepository.findById(id).orElse(null);
     }
 
     Optional<Status> initialStatus(){
         return statusRepository.findById(1L);
     }
+    Long getNumberOfStatuses(){return statusRepository.count();}
 
 }
