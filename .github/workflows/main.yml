@@ -16,6 +16,15 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '21'
+        distribution: 'adopt'
+        java-package: jdk
+        architecture: x64
+        check-latest: false
+        server-id: github
+        server-username: ${{ github.actor }}
+        server-password: ${{ github.token }}
+        overwrite-settings: true
+        job-status: success
     
     - name: Checkout code
       uses: actions/checkout@v2
