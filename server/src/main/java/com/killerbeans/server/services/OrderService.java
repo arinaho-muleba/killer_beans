@@ -22,6 +22,7 @@ public class OrderService {
     private final OrderLineRepository orderLineRepository;
     private  final BeanRepository beanRepository;
     private final StatusService statusService;
+    private  final AgentRepository agentRepository;
 
     @Autowired
     public OrderService(OrderRepository orderRepository,
@@ -29,13 +30,18 @@ public class OrderService {
                         CustomerRepository customerRepository,
                         OrderLineRepository orderLineRepository,
                         BeanRepository beanRepository,
-                        StatusService statusService) {
+                        StatusService statusService,
+                        AgentRepository agentRepository,
+                        StatusRepository statusRepository
+                        ) {
         this.orderRepository = orderRepository;
         this.addressRepository = addressRepository;
         this.customerRepository = customerRepository;
         this.orderLineRepository = orderLineRepository;
         this.beanRepository = beanRepository;
         this.statusService = statusService;
+        this.agentRepository = agentRepository;
+
     }
 
     public List<Order> getAllOrders() {
@@ -100,6 +106,34 @@ public class OrderService {
         }
 
         return order;
+    }
+
+    public Order assignAgentToOrder(Long orderId, Long agentId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found with ID: " + orderId));
+
+        Agent agent = agentRepository.findById(agentId)
+                .orElseThrow(() -> new IllegalArgumentException("Agent not found with ID: " + agentId));
+
+        order.setAgent(agent);
+        order.setStatus(statusService.getStatusById(2L));
+
+        return orderRepository.save(order);
+    }
+
+    public Order progressStatus(Long orderId, Long agentId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found with ID: " + orderId));
+
+        Agent agent = agentRepository.findById(agentId)
+                .orElseThrow(() -> new IllegalArgumentException("Agent not found with ID: " + agentId));
+
+        Status currentStatus =  order.getStatus();
+        if(currentStatus.getId()<statusService.getNumberOfStatuses()){
+            order.setStatus(statusService.getStatusById(currentStatus.getId()+1L));
+        }
+
+        return orderRepository.save(order);
     }
 
 }
