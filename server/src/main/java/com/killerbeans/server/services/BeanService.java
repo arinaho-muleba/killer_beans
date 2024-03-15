@@ -36,7 +36,6 @@ public class BeanService {
         List<Bean> beans = beanRepository.findByTimeToKillBetween(minTimeToKill, maxTimeToKill);
         for (Bean bean : beans) {
             Optional<Price> currentPrice = priceRepository.findCurrentPriceByBeanId(bean.getId());
-            //                BigDecimal amount = currentPrice.get().getPrice();
             currentPrice.ifPresent(price -> bean.setCurrentPrice(Optional.of(price)));
         }
         return beans;
@@ -46,7 +45,6 @@ public class BeanService {
         List<Bean> beans = beanRepository.findByTimeToKillGreaterThanEqual(minTimeToKill);
         for (Bean bean : beans) {
             Optional<Price> currentPrice = priceRepository.findCurrentPriceByBeanId(bean.getId());
-            //                BigDecimal amount = currentPrice.get().getPrice();
             currentPrice.ifPresent(price -> bean.setCurrentPrice(Optional.of(price)));
         }
         return beans;
