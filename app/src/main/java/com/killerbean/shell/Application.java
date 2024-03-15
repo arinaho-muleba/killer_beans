@@ -36,7 +36,7 @@ public class Application {
 		Requests.SESSION_TOKEN = request.getHeader("cookie");
 
 
-		return " Access Token :"+Requests.SESSION_TOKEN +"UserName : "+username+" Tyepe ";
+		return " Access Token :"+Requests.SESSION_TOKEN +"UserName : "+username+" Type ";
 	}
 	@GetMapping(path="/test")
 	public String getUser( HttpServletRequest request) throws URISyntaxException {
