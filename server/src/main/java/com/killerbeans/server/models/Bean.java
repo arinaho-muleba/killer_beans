@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "Beans")
@@ -33,13 +34,15 @@ public class Bean {
         return currentPrice;
     }
 
-//    public void setCurrentPrice(BigDecimal currentPrice) {
-//        this.currentPrice = currentPrice;
-//    }
-
-    public void setCurrentPrice(Price price) {
-        this.currentPrice = price.getPrice();
+    public void setCurrentPrice(Optional<Price> currentPrice) {
+        if(currentPrice.isPresent()){
+            this.currentPrice = currentPrice.get().getPrice();
+        }
     }
+
+//    public void setCurrentPrice(Price price) {
+//        this.currentPrice = price.getPrice();
+//    }
 
     public Bean() {
     }

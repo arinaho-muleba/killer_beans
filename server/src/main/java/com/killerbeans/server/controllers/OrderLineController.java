@@ -1,6 +1,5 @@
 package com.killerbeans.server.controllers;
 
-import com.killerbeans.server.models.Order;
 import com.killerbeans.server.models.OrderLine;
 import com.killerbeans.server.models.Price;
 import com.killerbeans.server.repositories.OrderLineRepository;
@@ -10,6 +9,7 @@ import com.killerbeans.server.services.OrderLineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +39,10 @@ public class OrderLineController {
         List<OrderLine> orderLines = orderLineService.getAllOrderLines();
         for(OrderLine orderLine : orderLines){
             Optional<Price> currentPrice = priceRepository.findCurrentPriceByBeanId(orderLine.getBean().getId());
-            currentPrice.ifPresent(orderLine.getBean()::setCurrentPrice);
+            if(currentPrice.isPresent()){
+                BigDecimal amount = currentPrice.get().getPrice();
+                orderLine.getBean().setCurrentPrice(currentPrice);
+            }
         }
         return orderLines;
     }
@@ -49,7 +52,10 @@ public class OrderLineController {
                 List <OrderLine> orderLines = orderLineService.getOrderLinesByOrderId(orderId);
         for (OrderLine orderLine : orderLines) {
             Optional<Price> currentPrice = priceRepository.findCurrentPriceByBeanId(orderLine.getBean().getId());
-            currentPrice.ifPresent(orderLine.getBean()::setCurrentPrice);
+            if(currentPrice.isPresent()){
+                BigDecimal amount = currentPrice.get().getPrice();
+                orderLine.getBean().setCurrentPrice(currentPrice);
+            }
         }
         return orderLines;
 
