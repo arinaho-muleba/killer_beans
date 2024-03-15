@@ -26,7 +26,7 @@ public class SecurityConfig {
                         authorizeRequests
                                 .anyRequest().authenticated()
                 )
-                .oauth2Login(withDefaults()); // Use OAuth 2.0 login
+                .oauth2Login(); // Use OAuth 2.0 login
         return http.build();
     }
 

@@ -1,6 +1,8 @@
 package com.killerbean.shell.commands;
 
+import com.killerbean.shell.Helpers.ApiRequestHandler;
 import com.killerbean.shell.Helpers.Requests;
+import com.killerbean.shell.Helpers.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -11,7 +13,6 @@ import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
-import org.springframework.shell.standard.ShellOption;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -272,29 +273,19 @@ public class HomeCommands {
         return "\n";
     }
 
-    @ShellMethod(key="send",value="we display any orders made")
+    @ShellMethod(key="Sign-in",value="we will log you in")
     public String testRequest() throws URISyntaxException {
-        String apiUrl = "http://localhost:3000/api/v1/bean/test";
-        //ResponseEntity<String> response = restTemplate.getForEntity(apiUrl, String.class);
-        // Create HttpHeaders and add the Cookie header
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.SET_COOKIE, Requests.SESSION_TOKEN);
-        headers.add(HttpHeaders.COOKIE, Requests.SESSION_TOKEN);
-        headers.add(HttpHeaders.AUTHORIZATION, Requests.SESSION_TOKEN);
 
-        // Create a RequestEntity with the headers and HttpMethod.GET
-        URI uri = new URI(apiUrl);
-        RequestEntity<Void> requestEntity = new RequestEntity<>(headers, HttpMethod.GET, uri);
-        System.out.println(requestEntity.getHeaders());
-        // Send the request and retrieve the response
-        ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
+        RestTemplate restTemplate = new RestTemplate();
 
-        if (response.getStatusCode().is2xxSuccessful()) {
-            String responseBody = response.getBody();
-            // Process the response
-            System.out.println("API response: " + responseBody);
-        } else {
-            System.err.println("Failed to fetch data from API. Status code: " + response.getStatusCodeValue());
+        ApiRequestHandler apiRequestHandler = new ApiRequestHandler(restTemplate);
+
+        try {
+            // Call the makeApiRequest method to make the API request
+            System.out.println(apiRequestHandler.makeApiRequest(Requests.SING_IN_URL));
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
         return "\n";
     }

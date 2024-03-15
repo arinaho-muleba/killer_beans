@@ -1,5 +1,6 @@
 package com.killerbeans.server;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +15,9 @@ public class ServerApplication {
 	}
 
 	@GetMapping
-	public String greet(){
-		return  "Welcome to killer beans";
+	public String greet( HttpServletRequest request){
+		String token = request.getHeader("cookie");
+		return  "Welcome to killer beans.\n Copy Token to CLI, Token : "+token;
 	}
 
 
