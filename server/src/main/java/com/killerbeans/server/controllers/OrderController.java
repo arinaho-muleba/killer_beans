@@ -48,7 +48,7 @@ public class OrderController {
         return orderService.getOrdersByAgentId(agentId);
     }
 
-    @GetMapping("{userId}")
+    @GetMapping("/byUser/{userId}")
     public List<Order> getOrdersByUserId(@PathVariable Long userId) {
         return orderService.getOrdersByUserId(userId);
     }
@@ -62,4 +62,17 @@ public class OrderController {
         Order createdOrder = orderService.createOrder(orderRequest);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
+
+    @PutMapping("/{orderId}/assignAgent")
+    public ResponseEntity<Order> assignAgentToOrder(@PathVariable Long orderId, @RequestParam Long agentId) {
+        Order updatedOrder = orderService.assignAgentToOrder(orderId, agentId);
+        return ResponseEntity.ok(updatedOrder);
+    }
+
+    @PutMapping("/{orderId}/progressOrder")
+    public ResponseEntity<Order> progressOrder(@PathVariable Long orderId, @RequestParam Long agentId) {
+        Order updatedOrder = orderService.progressStatus(orderId, agentId);
+        return ResponseEntity.ok(updatedOrder);
+    }
+
 }
