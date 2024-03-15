@@ -3,11 +3,13 @@ package com.killerbeans.server.controllers;
 import com.killerbeans.server.models.Bean;
 import com.killerbeans.server.services.BeanService;
 import com.killerbeans.server.services.PriceService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Enumeration;
 import java.util.List;
 
 @RestController
@@ -46,6 +48,4 @@ public class BeanController {
             return new ResponseEntity<>(beans, HttpStatus.OK);
         }
     }
-
-
 }
