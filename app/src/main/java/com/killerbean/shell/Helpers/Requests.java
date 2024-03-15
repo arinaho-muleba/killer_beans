@@ -4,9 +4,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 public class Requests {
-    public static final String SING_IN_URL = "http://localhost:8080/api/v1";
+    public static final String SING_IN_URL = "http://localhost:8080/";
     public static final String GET_BEANS_URL = "http://localhost:8080/api/v1/bean";
-    public static String SESSION_TOKEN = "JSESSIONID=1E5C0A9AC724125EC749D4248A7CDE18";
+    public static final String USER_SIGN_UP_URL = "http://localhost:8080/api/v1/signup";
+    public static String SESSION_TOKEN = "";
     public static RestTemplate restTemplate;
 
 

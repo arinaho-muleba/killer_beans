@@ -20,4 +20,8 @@ public class AgentService {
         return agentRepository.findById(agentId);
     }
 
+    public Optional<Agent> getAgentByAlias(String alias){
+        return agentRepository.findByAlias(alias);
+    }
+
 }
