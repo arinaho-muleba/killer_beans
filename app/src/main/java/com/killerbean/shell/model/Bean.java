@@ -1,29 +1,21 @@
-package com.killerbeans.server.models;
-import jakarta.persistence.*;
+package com.killerbean.shell.model;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Entity
-@Table(name = "Beans")
-public class Bean {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+public class Bean {
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "time_to_kill")
+
     private int timeToKill;
 
-    @Column(name = "quantity")
-    private int quantity;
 
-    @OneToMany(mappedBy = "bean")
-    private List<OrderLine> orderLines;
-    @Transient
+    private int quantity;
+//    private List<OrderLine> orderLines;
     private BigDecimal currentPrice;
 
 
@@ -33,9 +25,9 @@ public class Bean {
         return currentPrice;
     }
 
-//    public void setCurrentPrice(BigDecimal currentPrice) {
-//        this.currentPrice = currentPrice;
-//    }
+    public void setCurrentPrice(BigDecimal currentPrice) {
+        this.currentPrice = currentPrice;
+    }
 
     public void setCurrentPrice(Price price) {
         this.currentPrice = price.getPrice();
@@ -44,11 +36,12 @@ public class Bean {
     public Bean() {
     }
 
-    public Bean(Long id, String name, int timeToKill, int quantity) {
+    public Bean(Long id, String name, int timeToKill, int quantity, BigDecimal currentPrice) {
         this.id = id;
         this.name = name;
         this.timeToKill = timeToKill;
         this.quantity = quantity;
+        this.currentPrice=currentPrice;
     }
 
     public Bean(String name, int timeToKill, int quantity) {
@@ -91,11 +84,12 @@ public class Bean {
 
     @Override
     public String toString() {
-        return "Bean{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", timeToKill=" + timeToKill +
-                ", quantity=" + quantity +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("| %-5d| %-16s| %-12d| %-9d| %-13s  |\n", id, name, timeToKill, quantity, currentPrice));
+        sb.append("+------+-----------------+-------------+----------+----------------+\n");
+        return sb.toString();
     }
+
+
+
 }

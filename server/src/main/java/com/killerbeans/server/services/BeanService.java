@@ -32,4 +32,8 @@ public class BeanService {
     public List<Bean> getBeansByTimeToKillRange(int minTimeToKill, int maxTimeToKill) {
         return beanRepository.findByTimeToKillBetween(minTimeToKill, maxTimeToKill);
     }
+
+    public List<Bean> getBeansByMinTimeToKill(int minTimeToKill) {
+        return beanRepository.findByTimeToKillGreaterThanEqual(minTimeToKill);
+    }
 }

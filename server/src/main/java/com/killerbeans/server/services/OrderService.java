@@ -1,10 +1,14 @@
 package com.killerbeans.server.services;
 
-import com.killerbeans.server.models.Order;
-import com.killerbeans.server.repositories.OrderRepository;
+import com.killerbeans.server.models.*;
+import com.killerbeans.server.models.dtos.MinOrderLine;
+import com.killerbeans.server.models.dtos.OrderCreationRequest;
+import com.killerbeans.server.repositories.*;
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,10 +17,31 @@ import java.util.Optional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final AddressRepository addressRepository;
+    private final CustomerRepository customerRepository;
+    private final OrderLineRepository orderLineRepository;
+    private  final BeanRepository beanRepository;
+    private final StatusService statusService;
+    private  final AgentRepository agentRepository;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository,
+                        AddressRepository addressRepository,
+                        CustomerRepository customerRepository,
+                        OrderLineRepository orderLineRepository,
+                        BeanRepository beanRepository,
+                        StatusService statusService,
+                        AgentRepository agentRepository,
+                        StatusRepository statusRepository
+                        ) {
         this.orderRepository = orderRepository;
+        this.addressRepository = addressRepository;
+        this.customerRepository = customerRepository;
+        this.orderLineRepository = orderLineRepository;
+        this.beanRepository = beanRepository;
+        this.statusService = statusService;
+        this.agentRepository = agentRepository;
+
     }
 
     public List<Order> getAllOrders() {
@@ -48,4 +73,67 @@ public class OrderService {
     public List<Order> getOrdersByStatusId(Long statusId) {
         return orderRepository.findByStatusId(statusId);
     }
+
+    public Order createOrder(OrderCreationRequest orderRequest) {
+        // Retrieve customer and address from request
+        Customer customer = customerRepository.findById(orderRequest.getCustomerId()).orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+        Address address = orderRequest.getAddress();
+
+        // Save address if it doesn't exist
+        address = addressRepository.save(address);
+
+        // Create order
+        Order order = new Order();
+        order.setCustomer(customer);
+        order.setDateTime(LocalDateTime.now());
+        order.setAddress(address);
+        // Optionally set status, agent, etc.
+        statusService.initialStatus().ifPresent(order::setStatus);
+
+        // Save order
+        order = orderRepository.save(order);
+
+        // Add order lines
+        for (MinOrderLine minOrderLine : orderRequest.getMinOrderLines()) {
+            Bean bean = beanRepository.findById(minOrderLine.getItemId()).orElseThrow(() -> new IllegalArgumentException("Item not found"));
+            OrderLine orderLine = new OrderLine();
+            orderLine.setOrder(order);
+            orderLine.setBean(bean);
+            orderLine.setQuantity(minOrderLine.getQuantity());
+            // Save order line
+            orderLineRepository.save(orderLine);
+            // Optionally handle quantity, bean existence, etc.
+        }
+
+        return order;
+    }
+
+    public Order assignAgentToOrder(Long orderId, Long agentId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found with ID: " + orderId));
+
+        Agent agent = agentRepository.findById(agentId)
+                .orElseThrow(() -> new IllegalArgumentException("Agent not found with ID: " + agentId));
+
+        order.setAgent(agent);
+        order.setStatus(statusService.getStatusById(2L));
+
+        return orderRepository.save(order);
+    }
+
+    public Order progressStatus(Long orderId, Long agentId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found with ID: " + orderId));
+
+        Agent agent = agentRepository.findById(agentId)
+                .orElseThrow(() -> new IllegalArgumentException("Agent not found with ID: " + agentId));
+
+        Status currentStatus =  order.getStatus();
+        if(currentStatus.getId()<statusService.getNumberOfStatuses()){
+            order.setStatus(statusService.getStatusById(currentStatus.getId()+1L));
+        }
+
+        return orderRepository.save(order);
+    }
+
 }

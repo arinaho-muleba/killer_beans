@@ -1,34 +1,21 @@
-package com.killerbeans.server.models;
+package com.killerbean.shell.model;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Entity
-@Table(name = "prices")
-public class Price {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+public class Price {
     private Long id;
 
-    @Column(name = "price", precision = 8, scale = 2, nullable = false)
     private BigDecimal price;
 
-    @Column(name = "start_date", nullable = false)
     private Date startDate;
 
-    @Column(name = "end_date")
     private Date endDate;
 
-    @Column(name = "bean_id", nullable = false)
     private Integer beanId;
-
-    // Constructors, getters, and setters
     public Price() {
     }
-
     public Price(BigDecimal price, Date startDate, Date endDate, Integer beanId) {
         this.price = price;
         this.startDate = startDate;
@@ -36,7 +23,6 @@ public class Price {
         this.beanId = beanId;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }

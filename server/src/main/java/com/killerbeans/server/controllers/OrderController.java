@@ -1,8 +1,11 @@
 package com.killerbeans.server.controllers;
 
 import com.killerbeans.server.models.Order;
+import com.killerbeans.server.models.dtos.OrderCreationRequest;
 import com.killerbeans.server.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,4 +57,22 @@ public class OrderController {
     public List<Order> getOrdersByStatusId() {
         return orderService.getOrdersByStatusId(1L);
     }
+    @PostMapping("/create")
+    public ResponseEntity<Order> createOrder(@RequestBody OrderCreationRequest orderRequest) {
+        Order createdOrder = orderService.createOrder(orderRequest);
+        return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{orderId}/assignAgent")
+    public ResponseEntity<Order> assignAgentToOrder(@PathVariable Long orderId, @RequestParam Long agentId) {
+        Order updatedOrder = orderService.assignAgentToOrder(orderId, agentId);
+        return ResponseEntity.ok(updatedOrder);
+    }
+
+    @PutMapping("/{orderId}/progressOrder")
+    public ResponseEntity<Order> progressOrder(@PathVariable Long orderId, @RequestParam Long agentId) {
+        Order updatedOrder = orderService.progressStatus(orderId, agentId);
+        return ResponseEntity.ok(updatedOrder);
+    }
+
 }
