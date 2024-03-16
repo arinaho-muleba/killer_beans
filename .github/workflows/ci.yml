@@ -31,7 +31,7 @@ jobs:
       - name: Build with Maven
         id: build
         working-directory: server
-        run: sudo mvn -B package --file pom.xml
+        run: mvn -B package --file pom.xml
 
       - name: List target directory contents
         run: ls server/target
