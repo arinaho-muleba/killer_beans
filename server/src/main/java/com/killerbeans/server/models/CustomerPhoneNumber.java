@@ -3,6 +3,8 @@ package com.killerbeans.server.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.Optional;
+
 @Entity
 @Table(name = "customer_phone_numbers")
 public class CustomerPhoneNumber {
