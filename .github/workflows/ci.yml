@@ -55,4 +55,4 @@ jobs:
           environment_name: 'Killer-beans-env'
           region: 'eu-west-1'
           version_label: 'v${{ github.run_number }}'
-          source_bundle: "serverserver-0.0.1-SNAPSHOT.jar"  # Directly reference JAR location
+          source_bundle: "{{needs.build.outputs.jarFileName}}"  # Directly reference JAR location
