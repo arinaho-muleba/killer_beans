@@ -47,6 +47,7 @@ jobs:
       - name: Download Launch4j executable
         run: |
           curl -o launch4j.exe https://jaist.dl.sourceforge.net/project/launch4j/launch4j-3/3.15/launch4j-3.14.0-win32.exe
+          wait
 
       - name: Set permissions for launch4j.exe
         run: chmod +x ${{ github.workspace }}/launch4j.exe
