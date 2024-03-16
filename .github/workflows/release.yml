@@ -42,7 +42,7 @@ jobs:
       - name: Download JAR
         uses: actions/download-artifact@v3
         with:
-          name: killer-beans-client     
+          name: killer-beans-client  
 
       - name: Download Launch4j executable
         run: |
@@ -54,6 +54,7 @@ jobs:
 
       - name: Create EXE
         run: ${{ github.workspace }}/launch4j.exe -cp ${{ github.workspace }}/killer-beans-client.jar -outfile killer-beans-client.exe
+
 
   create-release:
     runs-on: ubuntu-latest
