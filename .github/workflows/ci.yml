@@ -42,7 +42,7 @@ jobs:
         uses: actions/checkout@v3
       
       - name: List target directory contents
-        run: ls server/target
+        run: ls target
 
       - name: Deploy Server to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
@@ -53,4 +53,4 @@ jobs:
           environment_name: Killer-beans-env
           region: 'eu-west-1'
           version_label: v${{ github.run_number }}
-          source_bundle: server/target/killer-beans-server.jar
+          source_bundle: target/killer-beans-server.jar
