@@ -1,4 +1,4 @@
-package com.killerbean.shell.model;
+package com.killerbeans.server.models.dtos;
 
 public class SignUpModel {
     private String CustomerPhoneNumber;

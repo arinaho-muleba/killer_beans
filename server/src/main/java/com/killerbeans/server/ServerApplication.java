@@ -14,11 +14,11 @@ public class ServerApplication {
 		SpringApplication.run(ServerApplication.class, args);
 	}
 
-	@GetMapping
+/*	@GetMapping
 	public String greet( HttpServletRequest request){
 		String token = request.getHeader("cookie");
 		return  "Welcome to killer beans.\n Copy Token to CLI, Token : "+token;
 	}
-
+*/
 
 }

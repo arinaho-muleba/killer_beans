@@ -43,5 +43,35 @@ public class ApiRequestHandler {
         }
         return responseBody;
     }
+
+    public String makeApiPostRequest(String apiUrl, Object requestBody) throws URISyntaxException {
+        String responseBody = "";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, User.SESSION_TOKEN);
+       // headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
+        URI uri = new URI(apiUrl);
+        ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.POST, requestEntity, String.class);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            responseBody = response.getBody();
+
+        } else if (response.getStatusCodeValue() == 302) {
+            String responseHeader = response.getHeaders().getFirst("Location");
+            System.out.println("\nFollow the link to log-in." + "\n" + "Location :" + responseHeader);
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Copy and paste the Token Here :");
+            String input = scanner.nextLine();
+            User.SESSION_TOKEN = input.split(":")[0];
+            User.USER_ID = Integer.parseInt(input.split(":")[1]);
+            User.IS_ADMIN = Integer.parseInt(input.split(":")[2]);
+        } else {
+            System.err.println("\nRequest Failed with code : " + response.getStatusCodeValue());
+        }
+
+        return responseBody;
+    }
 }
 
