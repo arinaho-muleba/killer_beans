@@ -53,7 +53,7 @@ jobs:
           name: killer-beans-server
       
       - name: List target directory contents
-        run: sudo ls ${{ github.workspace }}//killer_beans/killer_beans
+        run: sudo ls ${{ github.workspace }}
 
       - name: Deploy Server to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
@@ -64,4 +64,4 @@ jobs:
           environment_name: Killer-beans-env
           region: 'eu-west-1'
           version_label: v${{ github.run_number }}
-          source_bundle: ${{ github.workspace }}//killer_beans/killer_beans/killer-beans-server.jar
+          source_bundle: ${{ github.workspace }}/killer-beans-server.jar
