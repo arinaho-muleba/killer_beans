@@ -50,7 +50,8 @@ jobs:
 
       - name: Create EXE
         run: |
-          java -jar launch4j.exe -cp ${{ github.workspace }}/killer-beans-client.jar -outfile killer-beans-client.exe
+          ./launch4j.exe -cp ${{ github.workspace }}/killer-beans-client.jar -outfile killer-beans-client.exe
+
 
 
   create-release:
