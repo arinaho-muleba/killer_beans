@@ -40,7 +40,7 @@ jobs:
       #  run: zip -r deploy.zip . -x '*.git*'
 
       - name: List target directory contents
-        run: ls server
+        run: ls server/target
 
   deploy:
     runs-on: ubuntu-latest
