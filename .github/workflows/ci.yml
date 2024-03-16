@@ -64,4 +64,4 @@ jobs:
           environment_name: Killer-beans-env
           region: 'eu-west-1'
           version_label: v${{ github.run_number }}
-          source_bundle: killer-beans-server.jar
+          source_bundle: home/runner/work/killer_beans/killer_beans/killer-beans-server.jar
