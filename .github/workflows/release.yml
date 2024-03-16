@@ -49,8 +49,7 @@ jobs:
           curl -o launch4j.exe https://jaist.dl.sourceforge.net/project/launch4j/launch4j-3/3.15/launch4j-3.14.0-win32.exe
 
       - name: Create EXE
-        run: |
-          sudo ${{ github.workspace }}/launch4j.exe -cp ${{ github.workspace }}/killer-beans-client.jar -outfile killer-beans-client.exe
+        run: ${{ github.workspace }}/launch4j.exe -cp ${{ github.workspace }}/killer-beans-client.jar -outfile killer-beans-client.exe
 
 
 
