@@ -52,8 +52,7 @@ jobs:
         run: chmod +x ${{ github.workspace }}/launch4j.exe
 
       - name: Create EXE
-        run: |
-          sudo ${{ github.workspace }}/launch4j.exe -cp ${{ github.workspace }}/killer-beans-client.jar -outfile killer-beans-client.exe
+        run: sudo ${{ github.workspace }}/launch4j.exe -cp ${{ github.workspace }}/killer-beans-client.jar -outfile killer-beans-client.exe
 
 
 
