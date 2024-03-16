@@ -44,15 +44,14 @@ jobs:
         with:
           name: killer-beans-client     
 
-      - name: Install Wrapper Tool
+      - name: Download Launch4j executable
         run: |
-          curl -o launch4j.zip https://jaist.dl.sourceforge.net/project/launch4j/launch4j-3/3.15/launch4j-3.14.0-win32.zip
-          ls ${{ github.workspace }}
-          ls
-          unzip ${{ github.workspace }}/launch4j.zip
+          curl -o launch4j.exe https://jaist.dl.sourceforge.net/project/launch4j/launch4j-3/3.15/launch4j-3.14.0-win32.exe
 
       - name: Create EXE
-        run: ./launch4j/launch4j.exe -cp ${{ github.workspace }}/killer-beans-client.jar -outfile killer-beans-client.exe
+        run: |
+          java -jar launch4j.exe -cp ${{ github.workspace }}/killer-beans-client.jar -outfile killer-beans-client.exe
+
 
   create-release:
     runs-on: ubuntu-latest
