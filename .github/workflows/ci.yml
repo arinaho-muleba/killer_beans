@@ -40,7 +40,7 @@ jobs:
         run: zip -r deploy.zip . -x '*.git*'
 
       - name: List target directory contents
-        run: ls server/target
+        run: ls server
 
   deploy:
     runs-on: ubuntu-latest
@@ -60,4 +60,4 @@ jobs:
           region: 'eu-west-1'
           #version_label: 'v${{ github.run_number }}'
           version_label: 12345
-          source_bundle: deploy.zip  # Directly reference JAR location
+          source_bundle: server/deploy.zip  # Directly reference JAR location
