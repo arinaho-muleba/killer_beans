@@ -24,18 +24,29 @@ jobs:
           server-password: ${{ github.token }}
           overwrite-settings: true
           job-status: success
-      
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Build with Maven
         id: build
         working-directory: server
         run: mvn -B package --file pom.xml
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: jar-artifact
+          path: server/target/*.jar  # Capture the JAR file
 
-      - name: List target directory contents
-        run: ls server/target
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
 
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: jar-artifact
       - name: Deploy Server to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
         with:
@@ -45,6 +56,4 @@ jobs:
           environment_name: Killer-beans-env
           region: 'eu-west-1'
           version_label: v${{ github.run_number }}
-          source_bundle: server/target/killer-beans-server.jar      
-
-
+          source_bundle: ${{ github.workspace }}/jar-artifact/killer-beans-server.jar  # Assuming this is the filename
