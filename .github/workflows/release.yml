@@ -60,11 +60,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Create Release
-      - uses: ncipollo/release-action@v3
         uses: ncipollo/release-action@v3
         with:
           tag_name: v${{ github.run_number }}
           release_name: killer-beans-${{ github.run_number }}
           body: "Automated release with .exe file"
-          draft: false 
-          artifacts: "killer-beans-server.exe"
+          draft: false
+          artifacts: "killer-beans-client.exe" 
