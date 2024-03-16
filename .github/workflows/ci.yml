@@ -36,12 +36,8 @@ jobs:
       - name: Upload JAR
         uses: actions/upload-artifact@v3
         with:
-          name: artifact
-          path: build/libs/killer-beans-server.jar
-
-#      - name: List target directory contents
-#        run: ls server/target
-        
+          name: killer-beans-server
+          path: server/target/killer-beans-server.jar
 
   deploy:
     runs-on: ubuntu-latest
@@ -54,7 +50,7 @@ jobs:
       - name: Download JAR
         uses: actions/download-artifact@v3
         with:
-          name: artifact
+          name: killer-beans-server
       
       - name: List target directory contents
         run: sudo ls server
