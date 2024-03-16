@@ -9,10 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up JDK 21
-      - uses: ncipollo/release-action@v3
         uses: actions/setup-java@v3
         with:
           java-version: '21'
@@ -20,11 +20,6 @@ jobs:
           java-package: jdk
           architecture: x64
           check-latest: false
-          server-id: github
-          server-username: ${{ github.actor }}
-          server-password: ${{ github.token }}
-          overwrite-settings: true
-          job-status: success
 
       - name: Build with Maven
         id: build
@@ -41,7 +36,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Download JAR
         uses: actions/download-artifact@v3
@@ -49,7 +45,9 @@ jobs:
           name: killer-beans-client     
 
       - name: Install Wrapper Tool
-        run: curl -L -o launch4j.zip https://jaist.dl.sourceforge.net/project/launch4j/launch4j-3/3.15/launch4j-3.14.0-win32.zip && unzip launch4j.zip
+        run: |
+          curl -L -o launch4j.zip https://jaist.dl.sourceforge.net/project/launch4j/launch4j-3/3.15/launch4j-3.14.0-win32.zip
+          unzip launch4j.zip
 
       - name: Create EXE
         run: ./launch4j/launch4j.exe -cp ${{ github.workspace }}/killer-beans-client.jar -outfile killer-beans-client.exe
@@ -58,7 +56,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: create-exe 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Create Release
         uses: ncipollo/release-action@v3
         with:
