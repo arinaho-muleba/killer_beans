@@ -7,6 +7,7 @@ on:
 
 jobs:
   build:
+    name: killerbeans-server
     runs-on: ubuntu-latest
 
     steps:
@@ -52,4 +53,4 @@ jobs:
           environment_name: Killer-beans-env
           region: 'eu-west-1'
           version_label: v${{ github.run_number }}
-          source_bundle: server/target/${{ steps.build.outputs.jarFileName }}
+          source_bundle: server/target/killer-beans-server.jar
