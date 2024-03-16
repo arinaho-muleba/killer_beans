@@ -6,9 +6,9 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URISyntaxException;
 
 public class Requests {
-    public static final String SING_IN_URL = "http://localhost:8080/";
-    public static final String GET_BEANS_URL = "http://localhost:8080/api/v1/bean";
-    public static final String USER_SIGN_UP_URL = "http://localhost:8080/api/v1/signup";
+    public static final String SING_IN_URL = "http://killer-beans-env.eba-ccgh92bv.eu-west-1.elasticbeanstalk.com/";
+    public static final String GET_BEANS_URL = "http://killer-beans-env.eba-ccgh92bv.eu-west-1.elasticbeanstalk.com/api/v1/beans";
+    public static final String USER_SIGN_UP_URL = "http://killer-beans-env.eba-ccgh92bv.eu-west-1.elasticbeanstalk.com/signup";
     public static String SESSION_TOKEN = "";
     public static RestTemplate restTemplate;
 
@@ -17,7 +17,7 @@ public class Requests {
         restTemplate = new RestTemplate();
         ApiRequestHandler handler = new ApiRequestHandler(restTemplate);
 
-        String apiUrl = "http://localhost:8080/api/v1/"+entity;
+        String apiUrl = "http://killer-beans-env.eba-ccgh92bv.eu-west-1.elasticbeanstalk.com/api/v1/"+entity;
 
         return handler.makeApiRequest(apiUrl);
     }
@@ -27,7 +27,7 @@ public class Requests {
         restTemplate = new RestTemplate();
         ApiRequestHandler handler = new ApiRequestHandler(restTemplate);
 
-        String apiUrl = "http://localhost:8080/api/v1/"+condition+"/"+param1;
+        String apiUrl = "http://killer-beans-env.eba-ccgh92bv.eu-west-1.elasticbeanstalk.com/api/v1/"+condition+"/"+param1;
 
         return  handler.makeApiRequest(apiUrl);
     }
@@ -38,7 +38,7 @@ public class Requests {
 
         restTemplate = new RestTemplate();
         ApiRequestHandler handler = new ApiRequestHandler(restTemplate);
-        String apiUrl = "http://localhost:8080/api/v1/"+condition+"?"+param1+"&"+param2;
+        String apiUrl = "http://killer-beans-env.eba-ccgh92bv.eu-west-1.elasticbeanstalk.com/api/v1/"+condition+"?"+param1+"&"+param2;
 
         return handler.makeApiRequest(apiUrl);
     }

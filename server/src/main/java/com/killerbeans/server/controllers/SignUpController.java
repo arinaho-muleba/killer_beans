@@ -31,9 +31,6 @@ public class SignUpController {
         Long userId = signUpModel.getId();
         Customer customer=customerRepository.getById(userId);
         CustomerPhoneNumber phoneNumber = new CustomerPhoneNumber(customer,customerPhoneNumber);
-        // phoneNumber.setPhoneNumber(customerPhoneNumber);
-
-        // phoneNumber.setCustomer(customer);
 
         customerPhoneNumberService.saveCustomerPhoneNumber(phoneNumber);
         return "Sign-up complete";
