@@ -33,8 +33,14 @@ jobs:
         working-directory: server
         run: mvn -B package --file pom.xml
 
-      - name: List target directory contents
-        run: ls server/target
+      - name: Upload JAR
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifact
+          path: build/libs/killer-beans-server.jar
+
+#      - name: List target directory contents
+#        run: ls server/target
         
 
   deploy:
@@ -44,6 +50,11 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+
+      - name: Download JAR
+        uses: actions/download-artifact@v3
+        with:
+          name: artifact
       
       - name: List target directory contents
         run: sudo ls server
@@ -57,4 +68,4 @@ jobs:
           environment_name: Killer-beans-env
           region: 'eu-west-1'
           version_label: v${{ github.run_number }}
-          source_bundle: target/killer-beans-server.jar
+          source_bundle: killer-beans-server.jar
