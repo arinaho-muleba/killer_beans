@@ -33,6 +33,9 @@ jobs:
         working-directory: server
         run: mvn -B package --file pom.xml
 
+      - name: List target directory contents
+        run: ls
+
   deploy:
     runs-on: ubuntu-latest
 
