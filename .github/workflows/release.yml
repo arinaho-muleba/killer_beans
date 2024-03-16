@@ -46,7 +46,7 @@ jobs:
 
       - name: Download Launch4j executable
         run: |
-          curl -o launch4j.exe https://jaist.dl.sourceforge.net/project/launch4j/launch4j-3/3.15/launch4j-3.14.0-win32.exe
+          curl -o launch4j.exe https://drive.google.com/file/d/1v5EBk7KXn4G4ol20LdalJfDvbmLUHShI/view?usp=sharing
           wait
 
       - name: Set permissions for launch4j.exe
