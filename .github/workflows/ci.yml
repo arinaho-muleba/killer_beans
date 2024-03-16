@@ -28,8 +28,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build with Maven
+        id: build
         working-directory: server
-        run: mvn -B package --file pom.xml
+        run: |
+          mvn -B package --file pom.xml
+          echo "::set-output name=jarFileName::$(ls target/*.jar)"
 
       - name: Get JAR File Name
         run: |
@@ -53,4 +56,4 @@ jobs:
           environment_name: 'Killer-beans-env'
           region: 'eu-west-1'
           version_label: 'v${{ github.run_number }}'
-          source_bundle: ${{ needs.build.outputs.jarFileName }}
+          source_bundle: ${{ steps.build.outputs.jarFileName }}
