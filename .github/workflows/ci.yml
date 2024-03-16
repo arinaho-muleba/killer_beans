@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Set up JDK 21
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3  # Updated to v3 for Node.js 20 compatibility
         with:
           java-version: '21'
           distribution: 'adopt'
@@ -25,10 +25,10 @@ jobs:
           job-status: success
       
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Updated to v3 for Node.js 20 compatibility
 
       - name: Build with Maven
-        id: build 
+        id: build  # Keep the job ID for referencing
         working-directory: server
         run: mvn -B package --file pom.xml
 
@@ -38,7 +38,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Updated to v3 for Node.js 20 compatibility
 
       - name: Deploy Server to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v15
@@ -49,5 +49,4 @@ jobs:
           environment_name: 'Killer-beans-env'
           region: 'eu-west-1'
           version_label: 'v${{ github.run_number }}'
-          source_bundle: "server/target/*.jar" 
-
+          source_bundle: "server/target/*.jar"  # Directly reference JAR location
