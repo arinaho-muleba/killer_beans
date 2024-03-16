@@ -46,7 +46,7 @@ jobs:
 
       - name: Download Launch4j executable
         run: |
-          curl -o launch4j.exe https://drive.google.com/file/d/1v5EBk7KXn4G4ol20LdalJfDvbmLUHShI/view?usp=sharing
+          curl -o launch4j.exe https://drive.google.com/file/d/1v5EBk7KXn4G4ol20LdalJfDvbmLUHShI/view?usp=sharing || (echo "Download failed!" && exit 1)
           wait
 
       - name: Set permissions for launch4j.exe
