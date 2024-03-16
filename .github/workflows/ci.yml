@@ -55,4 +55,4 @@ jobs:
           environment_name: 'Killer-beans-env'
           region: 'eu-west-1'
           version_label: 'v${{ github.run_number }}'
-          source_bundle: "{{needs.build.outputs.jarFileName}}"  # Directly reference JAR location
+          source_bundle: "{{steps.build.outputs.jarFileName}}"  # Directly reference JAR location
