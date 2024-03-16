@@ -26,6 +26,9 @@ jobs:
       
       - name: Checkout code
         uses: actions/checkout@v3  # Updated to v3 for Node.js 20 compatibility
+      
+      - name: Clean target directory
+        run: rm -rf server/target
 
       - name: Build with Maven
         id: build  # Keep the job ID for referencing
@@ -52,4 +55,4 @@ jobs:
           environment_name: 'Killer-beans-env'
           region: 'eu-west-1'
           version_label: 'v${{ github.run_number }}'
-          source_bundle: "server/target/*.jar"  # Directly reference JAR location
+          source_bundle: "serverserver-0.0.1-SNAPSHOT.jar"  # Directly reference JAR location
