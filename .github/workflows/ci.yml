@@ -6,22 +6,38 @@ on:
       - vutlhari-feature/oauth-JWT
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v2
+      with:
+        java-version: '21'
+        distribution: 'adopt'
+        java-package: jdk
+        architecture: x64
+        check-latest: false
+        server-id: github
+        server-username: ${{ github.actor }}
+        server-password: ${{ github.token }}
+        overwrite-settings: true
+        job-status: success
+    
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build with Maven
+      working-directory: server
+      run: mvn -B package --file pom.xml
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: build
+    steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: '21' 
-
-      - name: Build Server with Maven
-        run: |
-          cd server
-          mvn -B package --file pom.xml
 
       - name: Deploy Server to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v15
