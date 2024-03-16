@@ -27,15 +27,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Cache Maven packages (Optional)
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
       - name: Clean target directory (Optional)
         run: rm -rf server/target
 
       - name: Build with Maven
         id: build
         working-directory: server
-        run: mvn -B package --file pom.xml || exit 1  # Exit 1 on build failure
+        run: mvn -B package --file pom.xml || exit 1
         outputs:
-          jarFileName: target/*.jar  # Capture JAR file path
+          jarFileName: target/*.jar
 
       - name: List target directory contents (Optional)
         run: ls server/target
@@ -57,4 +65,4 @@ jobs:
           environment_name: Killer-beans-env
           region: 'eu-west-1'
           version_label: v${{ github.run_number }}
-          source_bundle: ${{ steps.build.outputs.jarFileName }}  # Reference JAR from build output
+          source_bundle: server/target/${{ steps.build.outputs.jarFileName }}  # Use relative path
