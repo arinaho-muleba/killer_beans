@@ -33,9 +33,6 @@ jobs:
         working-directory: server
         run: mvn -B package --file pom.xml
 
-      - name: List target directory contents
-        run: ls server/target
-
   deploy:
     runs-on: ubuntu-latest
 
@@ -43,6 +40,9 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+      
+      - name: List target directory contents
+        run: ls server/target
 
       - name: Deploy Server to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
