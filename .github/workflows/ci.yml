@@ -28,9 +28,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Build with Maven
-      working-directory: server
-      run: mvn -B package --file pom.xml
+          - name: Build with Maven
+        id: build
+        working-directory: server
+        run: |
+          mvn -B package --file pom.xml
+          echo "::set-output name=jarFileName::$(ls target/*.jar)"
+
+      - name: List Build Artifact
+        run: ls -R server/target
   deploy:
     runs-on: ubuntu-latest
 
