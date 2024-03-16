@@ -65,4 +65,3 @@ jobs:
           region: 'eu-west-1'
           version_label: v${{ github.run_number }}
           deployment_package: ${{ github.workspace }}/killer-beans-server.jar
-          #file: ${{ github.workspace }}/killer-beans-server.jar
