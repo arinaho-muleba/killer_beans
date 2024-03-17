@@ -1,8 +1,7 @@
 <launch4jConfig>
     <dontWrapJar>false</dontWrapJar>
     <headerType>console</headerType>
-    <jar>target/killer-beans-client.jar</jar>
-    <outfile>target/killer-beans-client.jar</outfile>
+
     <errTitle></errTitle>
     <cmdLine></cmdLine>
     <chdir>.</chdir>
