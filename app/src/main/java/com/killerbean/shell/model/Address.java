@@ -9,6 +9,12 @@ public class Address {
     @JsonProperty("streetAddress")
     private String streetAddress;
 
+    public Address(String streetAddress, String suburb, String city) {
+        this.streetAddress = streetAddress;
+        this.suburb = suburb;
+        this.city = city;
+    }
+
     public String getSuburb() {
         return suburb;
     }

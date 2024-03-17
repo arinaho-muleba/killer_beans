@@ -142,8 +142,6 @@ public class AgentCommand {
         System.out.println();
 
         Integer orderId = indexToOrderIdMap.get(selectedIndex);
-        // Add your code here to perform actions on the selected order
-        // For example, you can update the order status to "Assigned to Agent" using the order ID
         updateOrderStatus(orderId);
     }
 
@@ -154,8 +152,6 @@ public class AgentCommand {
             return;
         }
 
-        // Make a call to your API to update the order status to "Assigned to Agent" using the order ID
-        // You need to replace "your-api-url" with the actual URL of your API
         String updateStatusUrl = "http://your-api-url/update-status";
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.put(updateStatusUrl + "?orderId=" + orderId, null);

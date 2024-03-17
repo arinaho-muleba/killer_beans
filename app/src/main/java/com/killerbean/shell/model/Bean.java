@@ -7,30 +7,13 @@ import java.util.List;
 
 public class Bean {
     private Long id;
-
     private String name;
 
-
     private int timeToKill;
-
-
     private int quantity;
-//    private List<OrderLine> orderLines;
     private BigDecimal currentPrice;
-
-
-    // Constructor, getters, and setters...
-
     public BigDecimal getCurrentPrice() {
         return currentPrice;
-    }
-
-    public void setCurrentPrice(BigDecimal currentPrice) {
-        this.currentPrice = currentPrice;
-    }
-
-    public void setCurrentPrice(Price price) {
-        this.currentPrice = price.getPrice();
     }
 
     public Bean() {
@@ -54,24 +37,12 @@ public class Bean {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getTimeToKill() {
         return timeToKill;
-    }
-
-    public void setTimeToKill(int timeToKill) {
-        this.timeToKill = timeToKill;
     }
 
     public int getQuantity() {
@@ -82,12 +53,10 @@ public class Bean {
         this.quantity = quantity;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("| %-5d| %-16s| %-12d| %-9d| %-13s  |\n", id, name, timeToKill, quantity, currentPrice));
-        sb.append("+------+-----------------+-------------+----------+----------------+\n");
-        return sb.toString();
+
+    public String toString(int index) {
+        return String.format("| %-5d| %-16s| %-12d| %-9d| %-13s  |\n", index, name, timeToKill, quantity, currentPrice) +
+                "+------+-----------------+-------------+----------+----------------+\n";
     }
 
 
