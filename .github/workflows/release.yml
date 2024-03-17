@@ -33,7 +33,7 @@ jobs:
           path: app/target/killer-beans-client.jar
 
   create-exe:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest  # Change to windows-latest runner
     needs: build
     steps:
       - name: Checkout code
@@ -53,7 +53,8 @@ jobs:
         run: chmod +x ${{ github.workspace }}/launch4j.exe
 
       - name: Create EXE
-        run: ${{ github.workspace }}/launch4j.exe -cp ${{ github.workspace }}/killer-beans-client.jar -outfile killer-beans-client.exe
+        run: ${{ github.workspace }}/launch4j.exe -cp %CD%\killer-beans-client.jar -outfile killer-beans-client.exe
+
 
 
   create-release:
