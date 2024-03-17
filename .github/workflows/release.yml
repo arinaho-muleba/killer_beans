@@ -46,7 +46,7 @@ jobs:
 
       - name: Download Launch4j executable
         run: |
-          curl -o launch4j.exe https://drive.google.com/file/d/1v5EBk7KXn4G4ol20LdalJfDvbmLUHShI/view?usp=sharing || (echo "Download failed!" && exit 1)
+          curl -o launch4j.exe https://elasticbeanstalk-eu-west-1-434468814231.s3.eu-west-1.amazonaws.com/launch4j-3.50-win32.exe
           wait
 
       - name: Set permissions for launch4j.exe
@@ -58,7 +58,7 @@ jobs:
 
   create-release:
     runs-on: ubuntu-latest
-    needs: create-exe 
+    needs: create-exe
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -70,4 +70,6 @@ jobs:
           release_name: killer-beans-${{ github.run_number }}
           body: "Automated release with .exe file"
           draft: false
-          artifacts: "killer-beans-client.exe" 
+          artifacts: "${{ github.workspace }}/killer-beans-client.exe"
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
