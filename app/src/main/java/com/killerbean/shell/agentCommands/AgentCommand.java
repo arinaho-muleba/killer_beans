@@ -17,9 +17,6 @@ import java.util.Scanner;
 
 @ShellComponent
 public class AgentCommand {
-    private static final String ORDERS_API_URL = "http://killer-beans-env.eba-ccgh92bv.eu-west-1.elasticbeanstalk.com/api/v1/orders/available";
-    private static final String MY_ORDERS_API_URL = "http://your-api-url/orders";
-    private Map<Integer, Integer> indexToOrderIdMap = new HashMap<>();
 
     @Bean
     public RestTemplate restTemplate() {
@@ -50,7 +47,7 @@ public class AgentCommand {
         }
 
         Order selectedOrder = orders.get(selectedIndex - 1);
-//        scanner.close();
+
         System.out.println("Here are the order details...");
         List<OrderLine> orderLines = orderService.getOrderLine(selectedOrder.getId());
 
@@ -65,7 +62,6 @@ public class AgentCommand {
         System.out.println("+-----------------+-----------------+----------------------+-------------------------+-------------------+");
         System.out.println("Confirm order?\n1. Yes \n2. No");
 
-        //Scanner scanner2 = new Scanner(System.in);
 
         int choice;
         do {
@@ -83,18 +79,17 @@ public class AgentCommand {
 
         // Process user's choice
         if (choice == 1) {
-            System.out.println("Order confirmed. ");
-            // Close the scanner
-            //scanner2.close();
-            return;
+            if(orderService.takeOrder(selectedOrder.getId())) {
+                System.out.println("Order confirmed.\nUse 'my-orders' command  to view orders assigned to you");
+                return;
+            }else {
+                System.out.println("Failed to assign order to you, try again later");
+                return;
+            }
         } else {
             System.out.println("Order canceled.");
-            // Close the scanner
-           // scanner2.close();
             return;
         }
-
-
 
     }
 
@@ -122,41 +117,38 @@ public class AgentCommand {
         }
 
         Order selectedOrder = orders.get(selectedIndex - 1);
-//        scanner.close();
-    }
 
-    private void selectOrder(int number_of_orders) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the index of the order you want to select: ");
-        int selectedIndex = scanner.nextInt();
+        System.out.println("Are you sure you want to progress the status of this order?\n1. Yes\n2. No");
+        int choice;
+        do {
+            System.out.print("Enter your choice: ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                System.out.println("Enter your choice: ");
+                scanner.next();
+            }
+            choice = scanner.nextInt();
+            if (choice < 1 || choice > 2) {
+                System.out.println("Invalid input. Please enter 1 or 2.");
+            }
+        } while (choice < 1 || choice > 2);
 
-
-        if (selectedIndex > number_of_orders) {
-            System.out.println("Invalid index. Please enter a valid index.");
-            selectOrder(number_of_orders);
+        if (choice == 1) {
+            if (orderService.progressOrder(selectedOrder.getId())) {
+                System.out.println("Order Progressed");
+                orders = orderService.fetchOrdersAssignedToMe();
+                OrderProcessor.viewOrders(orders);
+                return;
+            } else {
+                System.out.println("Failed to progress order to you, try again later");
+                return;
+            }
+        } else {
+            System.out.println("Order progress canceled.");
             return;
         }
-
-        System.out.println("You have selected the following order:");
-        System.out.println("Order Number: " + selectedIndex);
-        System.out.println();
-
-        Integer orderId = indexToOrderIdMap.get(selectedIndex);
-        updateOrderStatus(orderId);
     }
 
-    private void updateOrderStatus(int selectedIndex) {
-        Integer orderId = indexToOrderIdMap.get(selectedIndex);
-        if (orderId == null) {
-            System.out.println("Invalid index. Please enter a valid index.");
-            return;
-        }
 
-        String updateStatusUrl = "http://your-api-url/update-status";
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.put(updateStatusUrl + "?orderId=" + orderId, null);
-
-        System.out.println("Order status updated for order Number: " + selectedIndex);
-    }
 
 }
