@@ -37,7 +37,7 @@ public class ApiRequestHandler {
             String input = scanner.nextLine();
             User.SESSION_TOKEN = input.split(":")[0];
             User.USER_ID = Integer.parseInt(input.split(":")[1]);
-            User.IS_ADMIN = Integer.parseInt(input.split(":")[2]);
+            User.IS_ADMIN = Boolean.parseBoolean(input.split(":")[2]);
         } else {
             System.err.println("\nRequest Failed with code : " + response.getStatusCodeValue());
         }
@@ -66,7 +66,7 @@ public class ApiRequestHandler {
             String input = scanner.nextLine();
             User.SESSION_TOKEN = input.split(":")[0];
             User.USER_ID = Integer.parseInt(input.split(":")[1]);
-            User.IS_ADMIN = Integer.parseInt(input.split(":")[2]);
+            User.IS_ADMIN = Boolean.parseBoolean(input.split(":")[2]);
         } else {
             System.err.println("\nRequest Failed with code : " + response.getStatusCodeValue());
         }

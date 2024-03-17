@@ -30,18 +30,9 @@ public class AccessCommands {
 
     private String state; // State for CSRF protection
 
-    @ShellMethod(key="auth",value="Log in with github")
+    @ShellMethod(key="sign-in",value="Log in with github")
     public String authenticate() {
-/*        state = "your-state"; // Generate a random state (optional, used for CSRF protection)
 
-        String authorizationUrl = "https://github.com/login/oauth/authorize";
-        String url = UriComponentsBuilder.fromHttpUrl(authorizationUrl)
-                .queryParam("client_id", clientId)
-                .queryParam("redirect_uri", redirectUri)
-                .queryParam("state", state)
-                .build().toUriString();
-
-        return "Please visit the following URL to authenticate with GitHub:\n" + url;*/
         RestTemplate restTemplate = new RestTemplate();
         ApiRequestHandler apiRequestHandler = new ApiRequestHandler(restTemplate);
 
