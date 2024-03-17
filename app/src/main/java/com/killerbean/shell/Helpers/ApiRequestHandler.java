@@ -2,9 +2,12 @@ package com.killerbean.shell.Helpers;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Scanner;
+
+import static com.killerbean.shell.Helpers.Requests.redirectUser;
 
 public class ApiRequestHandler {
 
@@ -16,24 +19,31 @@ public class ApiRequestHandler {
 
     public String makeApiRequest(String apiUrl) throws URISyntaxException {
         String responseBody = "";
+
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, User.SESSION_TOKEN);
 
         URI uri = new URI(apiUrl);
         RequestEntity<Void> requestEntity = new RequestEntity<>(headers, HttpMethod.GET, uri);
+        ResponseEntity<String> response = ResponseEntity.ok().body("");
 
-        ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
+        try {
+            response = restTemplate.exchange(requestEntity, String.class);
+        }
+        catch (Exception e) {
+            return responseBody;
+        }
 
         if (response.getStatusCode().is2xxSuccessful()) {
             responseBody = response.getBody();
 
-            // Process the response
-            //System.out.println("API response: " + responseBody);
         } else if (response.getStatusCodeValue() == 302) {
+            redirectUser();
             String responseHeader = response.getHeaders().getFirst("Location");
-            System.out.println("\nFollow the link to log-in." + "\n" + "Location :" + responseHeader);
+            System.out.println("\nFollow the link to log-in." + "\n" + "Location if you are not redirected :" + responseHeader);
             Scanner scanner = new Scanner(System.in);
             System.out.println("Copy and paste the Token Here :");
+
             String input = scanner.nextLine();
             User.SESSION_TOKEN = input.split(":")[0];
             User.USER_ID = Integer.parseInt(input.split(":")[1]);

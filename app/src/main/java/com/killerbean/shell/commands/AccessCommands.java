@@ -8,17 +8,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.web.client.RestTemplate;
-
-
 import java.net.URISyntaxException;
 import java.util.Scanner;
+import static com.killerbean.shell.Helpers.Requests.redirectUser;
 
 @ShellComponent
 public class AccessCommands {
 
-    public static boolean connected = true;
-
-
+    public static boolean connected = false;
     @Value("${github.client.id}")
     private String clientId;
 
@@ -28,22 +25,25 @@ public class AccessCommands {
     @Value("${github.redirect.uri}")
     private String redirectUri;
 
-    private String state; // State for CSRF protection
+    private String state;
 
     @ShellMethod(key="sign-in",value="Log in with github")
     public String authenticate() {
 
+        redirectUser();
         RestTemplate restTemplate = new RestTemplate();
         ApiRequestHandler apiRequestHandler = new ApiRequestHandler(restTemplate);
-
         try {
-            // Call the makeApiRequest method to make the API request
             System.out.println(apiRequestHandler.makeApiRequest(Requests.SING_IN_URL));
-
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        return "\n";
+
+
+
+
+        connected=true;
+        return "\u001B[32mYou have successfully signed in\n\u001B[0m";
     }
 
     @ShellMethod(key="sign-up",value="You will create an account")

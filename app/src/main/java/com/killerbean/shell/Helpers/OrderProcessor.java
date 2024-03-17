@@ -43,8 +43,8 @@ public class OrderProcessor {
 
     public static void printOrders(Map<Integer, OrderClientView> orderMap) {
 
-        System.out.println("name\t\ttimeToKill\t\t\t\tprice\t\t\t\tQuantity Bought");
-        System.out.println("------------------------------------------------------------------------------------------");
+        System.out.println("\u001B[32mReference\t\tDate Created\t\t\t\tStatus\t\t\t\tAgent Assigned\u001B[0m");
+        System.out.println("\u001B[33m------------------------------------------------------------------------------------------\u001B[0m");
         for (Map.Entry<Integer, OrderClientView> entry : orderMap.entrySet()) {
             System.out.println(entry.getValue());
         }
