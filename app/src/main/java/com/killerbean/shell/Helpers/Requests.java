@@ -26,7 +26,7 @@ public class Requests {
         restTemplate = new RestTemplate();
         ApiRequestHandler handler = new ApiRequestHandler(restTemplate);
         String apiUrl = GET_ENTITY_URL+path;
-        handler.makeApiPostRequest(apiUrl, entityDetails);
+        handler.makeApiPostRequest(apiUrl, entityDetails.toString());
     }
 
 

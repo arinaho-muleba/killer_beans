@@ -15,6 +15,7 @@ public class OrderService {
     private final String ORDERS_URL = Urls.BASE_URL.getUrl()+"/orders/available";
     private final String MY_ORDERS_URL = Urls.BASE_URL.getUrl()+"/orders/byAgent/";
     private final String ORDER_LINE_URL = Urls.BASE_URL.getUrl()+"/orderLines/byOrder/";
+    private  final String TAKE_ORDER_URL = Urls.BASE_URL.getUrl()+"/orders/";
     private final RestTemplate restTemplate = new RestTemplate();
 
     public OrderService() {
@@ -32,7 +33,6 @@ public class OrderService {
         }
 
         try {
-            System.out.println(json);
             ObjectMapper objectMapper = new ObjectMapper();
             Order[] orders = objectMapper.readValue(json, Order[].class);
 
@@ -73,13 +73,41 @@ public class OrderService {
         String json ="";
         try {
             json = apiRequestHandler.makeApiRequest(ORDER_LINE_URL+String.valueOf(id));
-
         }catch (URISyntaxException e){
             return new ArrayList<>();
         }
         return OrderLineProcessor.fromJson(json);
     }
 
+    public Boolean takeOrder(Long orderId){
+        ApiRequestHandler apiRequestHandler = new ApiRequestHandler(this.restTemplate);
+        String json ="";
+        try {
+            json = apiRequestHandler.makeApiPutRequest(TAKE_ORDER_URL+ String.valueOf(orderId)+"/assignAgent?agentId="+String.valueOf(User.USER_ID));
+        }catch (URISyntaxException e){
+            System.out.println(e.getMessage() +" : " + json);
+            return false;
+        }
+        if(json.isEmpty()){
+            return false;
+        }
+        return true;
+    }
+
+    public Boolean progressOrder(Long orderId){
+        ApiRequestHandler apiRequestHandler = new ApiRequestHandler(this.restTemplate);
+        String json ="";
+        try {
+            json = apiRequestHandler.makeApiPutRequest(TAKE_ORDER_URL+ String.valueOf(orderId)+"/progressOrder?agentId="+String.valueOf(User.USER_ID));
+        }catch (URISyntaxException e){
+            System.out.println(e.getMessage() +" : " + json);
+            return false;
+        }
+        if(json.isEmpty()){
+            return false;
+        }
+        return true;
+    }
 
 
 }

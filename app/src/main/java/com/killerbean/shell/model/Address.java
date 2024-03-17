@@ -8,12 +8,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Address {
     @JsonProperty("streetAddress")
     private String streetAddress;
+    @JsonProperty("suburb")
+    private String suburb;
+    @JsonProperty("city")
+    private String city;
+
 
     public Address(String streetAddress, String suburb, String city) {
         this.streetAddress = streetAddress;
         this.suburb = suburb;
         this.city = city;
     }
+
+    public Address() {
+    }
+
 
     public String getSuburb() {
         return suburb;
@@ -31,10 +40,6 @@ public class Address {
         this.city = city;
     }
 
-    @JsonProperty("suburb")
-    private String suburb;
-    @JsonProperty("city")
-    private String city;
 
     // Other fields such as id, suburb, city can be added here if needed.
 
