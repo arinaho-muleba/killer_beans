@@ -72,7 +72,9 @@ jobs:
       - name: Download Exe
         uses: actions/download-artifact@v3
         with:
-          name: killer-beans-client  
+          name: killer-beans-client
+      - name: list files
+        run: ls ${{ github.workspace }}
 
       - name: Create Release
         uses: ncipollo/release-action@v1.10.0
