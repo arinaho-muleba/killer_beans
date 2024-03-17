@@ -1,6 +1,8 @@
 <launch4jConfig>
     <dontWrapJar>false</dontWrapJar>
     <headerType>console</headerType>
+    <jar>target/killer-beans-client.jar</jar>
+    <outfile>target/killer-beans-client.jar</outfile>
     <errTitle></errTitle>
     <cmdLine></cmdLine>
     <chdir>.</chdir>
@@ -11,6 +13,10 @@
     <stayAlive>false</stayAlive>
     <manifest></manifest>
     <icon></icon>
+    <classPath>
+        <mainClass>Application</mainClass>
+        <cp>com.killerbean.shell</cp>
+    </classPath>
     <jre>
         <path></path>
         <bundledJre64Bit>false</bundledJre64Bit>
