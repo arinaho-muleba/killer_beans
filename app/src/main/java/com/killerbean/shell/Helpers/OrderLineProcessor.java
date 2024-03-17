@@ -15,7 +15,6 @@ public class OrderLineProcessor {
         for (int index = 0; index < jsonArray.length(); index++) {
 
             JSONObject jsonObject = jsonArray.getJSONObject(index);
-
             JSONObject beanObject = jsonObject.getJSONObject("bean");
             String name = beanObject.getString("name");
             int timeToKill = beanObject.getInt("timeToKill");
@@ -30,8 +29,8 @@ public class OrderLineProcessor {
 
     public static void printOrderLines(Map<Integer, OrderLine> orderMap) {
 
-        System.out.println("name\t\ttimeToKill\t\t\t\tprice\t\t\t\tQuantity Bought\t\t\tTotal Cost");
-        System.out.println("------------------------------------------------------------------------------------------");
+        System.out.println("\u001B[32m name\t\tDaysToKill\t\t\t\tprice\t\t\t\tQuantity Bought\t\t\tTotal Cost\u001B[0m");
+        System.out.println("\u001B[33m------------------------------------------------------------------------------------------\u001B[0m");
         for (Map.Entry<Integer, OrderLine> entry : orderMap.entrySet()) {
             System.out.println(entry.getValue());
         }

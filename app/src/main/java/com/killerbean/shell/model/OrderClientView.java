@@ -17,7 +17,6 @@ public class OrderClientView {
         this.agent = agent;
     }
 
-
     public String getStatus() {
         return status;
     }
@@ -40,6 +39,6 @@ public class OrderClientView {
             finalDate = date.substring(0, date.indexOf('.'));
 
 
-        return String.format("%-9d\t%-15s\t%-20s\t%-15s", id, finalDate, status, agent);
+        return String.format("%-9d\t%-30s\t%-15s\t%-15s", id, finalDate, status, agent);
     }
 }

@@ -13,7 +13,6 @@ public class BeanProcessor {
         Map<Integer, Bean> resultMap = new HashMap<>();
 
         JSONArray jsonArray = new JSONArray(beanJSON);
-        System.out.println(beanJSON);
 
         for (int index = 0; index < jsonArray.length(); index++) {
             JSONObject jsonObject = jsonArray.getJSONObject(index);
@@ -26,7 +25,7 @@ public class BeanProcessor {
 
             Bean bean = new Bean(id,name,timeToKill,quantity,BigDecimal.valueOf(currentPrice));
 
-            resultMap.put(index, bean);
+            resultMap.put(Math.toIntExact(index+1), bean);
         }
 
         return resultMap;
@@ -37,10 +36,9 @@ public class BeanProcessor {
         System.out.print("+------+-----------------+-------------+----------+----------------+\n");
         System.out.print("|  ID  |       Name      |  DaysToKill | Quantity | Current Price  |\n");
         System.out.print("+------+-----------------+-------------+----------+----------------+\n");
-        for (Map.Entry<Integer, Bean> entry : beanMap.entrySet()) {
-            System.out.print(entry.getValue());
-        }
+
+        beanMap.forEach((key, value) -> {
+            System.out.println(value.toString(key));
+        });
     }
-
-
 }
