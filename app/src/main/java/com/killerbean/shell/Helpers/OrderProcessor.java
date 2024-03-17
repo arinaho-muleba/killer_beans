@@ -1,12 +1,14 @@
 package com.killerbean.shell.Helpers;
 
 import com.killerbean.shell.model.Bean;
+import com.killerbean.shell.model.Order;
 import com.killerbean.shell.model.OrderClientView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OrderProcessor {
@@ -48,6 +50,20 @@ public class OrderProcessor {
         for (Map.Entry<Integer, OrderClientView> entry : orderMap.entrySet()) {
             System.out.println(entry.getValue());
         }
+    }
+
+    public static void viewOrders(List<Order> orderList) {
+        System.out.println("+---------+---------------------+-------------------+-------------------+");
+        System.out.println("|  INDEX  |       Customer      |      Address      |      STATUS       |");
+        System.out.println("+---------+---------------------+-------------------+-------------------+");
+        for (int i = 0; i < orderList.size(); i++) {
+            Order order = orderList.get(i);
+            String customerAlias = order.getCustomer().getAlias();
+            String streetAddress = order.getAddress().getStreetAddress();
+            String status = order.getStatus().getStatus();
+            System.out.printf("| %7d | %-19s | %-17s | %-17s |\n", i+1, customerAlias, streetAddress,status);
+        }
+        System.out.println("+---------+---------------------+-------------------+-------------------+");
     }
 
 }
