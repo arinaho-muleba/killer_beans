@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
@@ -40,14 +41,12 @@ public class UserController {
     public String login( HttpServletRequest request,@AuthenticationPrincipal OAuth2User oauth2User){
         String token = request.getHeader("cookie");
         String alias = (String) oauth2User.getAttribute("login");
-        // Define isAdmin as AtomicInteger
-        AtomicInteger isAdmin = new AtomicInteger(0);
-
+        AtomicBoolean isAdmin = new AtomicBoolean(false);
         Long userId = customerService.getCustomerByAlias(alias)
                 .map(Customer::getId)
                 .orElseGet(() -> agentService.getAgentByAlias(alias)
                         .map(agent -> {
-                            isAdmin.set(1); // Set isAdmin to 1
+                            isAdmin.set(true);
                             return agent.getId();
                         })
                         .orElse(null));
