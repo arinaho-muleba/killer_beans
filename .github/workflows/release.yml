@@ -60,7 +60,7 @@ jobs:
           name: killer-beans-client-exe
           path: ${{ github.workspace }}/killer-beans-client.exe
       - name: list files
-        run: ls ${{github.workflow}}
+        run: ls ${{github.workspace}}
 
 
 
