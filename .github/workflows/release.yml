@@ -33,7 +33,7 @@ jobs:
           path: app/target/killer-beans-client.jar
 
   create-exe:
-    runs-on: windows-latest  # Change to windows-latest runner
+    runs-on: ubuntu-latest  # Change to windows-latest runner
     needs: build
     steps:
       - name: Checkout code
