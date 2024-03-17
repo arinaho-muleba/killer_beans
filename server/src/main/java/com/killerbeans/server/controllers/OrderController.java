@@ -27,10 +27,20 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public Order getOrderById(@PathVariable Long id) {
-        return orderService.getOrderById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found with ID: " + id));
+    public ResponseEntity<?> getOrderById(@PathVariable String id) {
+
+        Long orderId;
+        try {
+            orderId = Long.parseLong(id);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("ID must be a valid Long value");
+        }
+        Order order = orderService.getOrderById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found with ID: " + orderId));
+        return ResponseEntity.ok(order);
     }
+
 
     @PostMapping
     public Order createOrder(@RequestBody Order order) {
