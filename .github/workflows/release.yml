@@ -66,10 +66,10 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1.10.0
         with:
-          tag_name: v${{ github.run_number }}
-          release_name: killer-beans-${{ github.run_number }}
+          tag: v${{ github.run_number }}
+          name: killer-beans-${{ github.run_number }}
           body: "Automated release with .exe file"
           draft: false
           artifacts: "${{ github.workspace }}/killer-beans-client.exe"
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
