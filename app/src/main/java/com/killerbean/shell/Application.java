@@ -23,35 +23,6 @@ import java.net.http.HttpResponse;
 @SpringBootApplication
 @RestController
 public class Application {
-	@GetMapping(path="/")
-	public String getUserT(@AuthenticationPrincipal OAuth2User oauth2User, HttpServletRequest request){
-
-		String username = (String) oauth2User.getAttribute("login");
-		System.out.println("UserName : "+username);
-		//String accessToken = request.changeSessionId();
-		String token = request.getHeader("cookie");
-		String type= request.getAuthType();
-		AccessCommands.connected = true;
-
-		Requests.SESSION_TOKEN = request.getHeader("cookie");
-
-
-		return " Access Token :"+Requests.SESSION_TOKEN +"UserName : "+username+" Type ";
-	}
-	@GetMapping(path="/test")
-	public String getUser( HttpServletRequest request) throws URISyntaxException {
-
-
-		String accessToken = request.changeSessionId();
-		String token = request.getHeader("cookie");
-		String type= request.getAuthType();
-		AccessCommands.connected = true;
-		//return " Access Token :"+token;
-
-
-		return "\n";
-	}
-
 
 	public static void main(String[] args) {
 
