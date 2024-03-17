@@ -52,14 +52,14 @@ jobs:
         run: chmod +x ${{ github.workspace }}/launch4j.exe
 
       - name: Create EXE
-        run: ${{ github.workspace }}/launch4j.exe -config /launch4j.xml -cp ${{ github.workspace }}/killer-beans-client.jar -outfile ${{ github.workspace }}/killer-beans-client.exe
+        run: ${{ github.workspace }}\launch4j.exe -config \launch4j.xml -cp ${{ github.workspace }}\killer-beans-client.jar -outfile ${{ github.workspace }}\killer-beans-client.exe
       
 
       - name: Upload EXE artifact
         uses: actions/upload-artifact@v4
         with:
           name: killer-beans-client-exe
-          path: ${{ github.workspace }}/killer-beans-client.exe
+          path: ${{ github.workspace }}\killer-beans-client.exe
       - name: list files
         run: ls ${{ github.workspace }}
 
