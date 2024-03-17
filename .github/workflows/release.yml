@@ -47,7 +47,6 @@ jobs:
       - name: Download Launch4j executable
         run: |
           curl -o launch4j.exe https://elasticbeanstalk-eu-west-1-434468814231.s3.eu-west-1.amazonaws.com/launch4j-3.50-win32.exe
-          wait
 
       - name: Set permissions for launch4j.exe
         run: chmod +x ${{ github.workspace }}/launch4j.exe
