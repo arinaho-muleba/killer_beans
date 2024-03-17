@@ -52,7 +52,13 @@ jobs:
         run: chmod +x ${{ github.workspace }}/launch4j.exe
 
       - name: Create EXE
-        run: ${{ github.workspace }}/launch4j.exe -cp %CD%\killer-beans-client.jar -outfile killer-beans-client.exe
+        run: ${{ github.workspace }}/launch4j.exe -cp %CD%\killer-beans-client.jar -outfile ${{ github.workspace }}/killer-beans-client.exe
+
+      - name: Upload EXE artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: killer-beans-client-exe
+          path: ${{ github.workspace }}/killer-beans-client.exe
 
 
 
@@ -63,6 +69,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Download Exe
+        uses: actions/download-artifact@v3
+        with:
+          name: killer-beans-client  
+
       - name: Create Release
         uses: ncipollo/release-action@v1.10.0
         with:
@@ -70,7 +81,7 @@ jobs:
           name: killer-beans-${{ github.run_number }}
           body: "Automated release with .exe file"
           draft: false
-          artifacts: "killer-beans-client.exe"
+          artifacts: ${{ github.workspace }}/killer-beans-client.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
