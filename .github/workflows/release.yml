@@ -52,7 +52,7 @@ jobs:
         run: chmod +x ${{ github.workspace }}/launch4j.exe
 
       - name: Create EXE
-        run: ${{ github.workspace }}/launch4j.exe -config /launch4j.xml -cp ${{ github.workspace }}/killer-beans-client.jar -outfile ${{ github.workspace }}/killer-beans-client.exe
+        run: pwsh -command "D:\a\killer_beans\killer_beans/launch4j.exe -config /launch4j.xml -cp D:\a\killer_beans\killer_beans/killer-beans-client.jar -outfile D:\a\killer_beans\killer_beans/killer-beans-client.exe"
       
 
       - name: Upload EXE artifact
