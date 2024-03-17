@@ -3,7 +3,7 @@ name: Creating Executable file
 on:
   push:
     branches:
-      - vutlhari-feature/oauth-JWT
+      - main
 
 jobs:
   build:
