@@ -59,7 +59,7 @@ public class ApiRequestHandler {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, User.SESSION_TOKEN);
-       // headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
         URI uri = new URI(apiUrl);
