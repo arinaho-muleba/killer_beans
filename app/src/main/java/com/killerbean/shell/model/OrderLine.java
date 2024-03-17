@@ -37,8 +37,11 @@ public class OrderLine {
 
     @Override
     public String toString() {
-
-        return String.format("%-15s\t%-15d\t%-20f\t%-25d\t%-15f", name, timeToKillInDays, price, quantityBought,totalCost);
+        return String.format("| %-15s | %-15d | %-20.2f | %-25d | %-15.2f |",
+                name, timeToKillInDays, price, quantityBought, totalCost);
     }
 
+
 }
+
+

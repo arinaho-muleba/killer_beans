@@ -23,6 +23,7 @@ import java.net.http.HttpResponse;
 @SpringBootApplication
 @RestController
 public class Application {
+
 	@GetMapping(path="/")
 	public String getUserT(@AuthenticationPrincipal OAuth2User oauth2User, HttpServletRequest request){
 
