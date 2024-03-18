@@ -1,73 +1,73 @@
-package com.killerbean.shell.commands;
+    package com.killerbean.shell.commands;
 
-import com.killerbean.shell.Helpers.ApiRequestHandler;
-import com.killerbean.shell.Helpers.Requests;
-import com.killerbean.shell.Helpers.User;
-import com.killerbean.shell.model.SignUpModel;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
-import org.springframework.web.client.RestTemplate;
-
-
-import java.net.URISyntaxException;
-import java.util.Scanner;
-
-@ShellComponent
-public class AccessCommands {
-
-    public static boolean connected = true;
+    import com.killerbean.shell.Helpers.ApiRequestHandler;
+    import com.killerbean.shell.Helpers.Requests;
+    import com.killerbean.shell.Helpers.User;
+    import com.killerbean.shell.model.SignUpModel;
+    import org.springframework.beans.factory.annotation.Value;
+    import org.springframework.shell.standard.ShellComponent;
+    import org.springframework.shell.standard.ShellMethod;
+    import org.springframework.web.client.RestTemplate;
 
 
-    @Value("${github.client.id}")
-    private String clientId;
+    import java.net.URISyntaxException;
+    import java.util.Scanner;
 
-    @Value("${github.client.secret}")
-    private String clientSecret;
+    @ShellComponent
+    public class AccessCommands {
 
-    @Value("${github.redirect.uri}")
-    private String redirectUri;
+        public static boolean connected = true;
 
-    private String state; // State for CSRF protection
 
-    @ShellMethod(key="sign-in",value="Log in with github")
-    public String authenticate() {
+        @Value("${github.client.id}")
+        private String clientId;
 
-        RestTemplate restTemplate = new RestTemplate();
-        ApiRequestHandler apiRequestHandler = new ApiRequestHandler(restTemplate);
+        @Value("${github.client.secret}")
+        private String clientSecret;
 
-        try {
-            // Call the makeApiRequest method to make the API request
-            System.out.println(apiRequestHandler.makeApiRequest(Requests.SING_IN_URL));
+        @Value("${github.redirect.uri}")
+        private String redirectUri;
 
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        return "\n";
-    }
+        private String state; // State for CSRF protection
 
-    @ShellMethod(key="sign-up",value="You will create an account")
-    public String signup(){
-        Scanner input = new Scanner(System.in);
-        SignUpModel signupModel = new SignUpModel();
+        @ShellMethod(key="sign-in",value="Log in with github")
+        public String authenticate() {
 
-        RestTemplate restTemplate = new RestTemplate();
-        ApiRequestHandler apiRequestHandler = new ApiRequestHandler(restTemplate);
+            RestTemplate restTemplate = new RestTemplate();
+            ApiRequestHandler apiRequestHandler = new ApiRequestHandler(restTemplate);
 
-        try {
+            try {
+                // Call the makeApiRequest method to make the API request
+                System.out.println(apiRequestHandler.makeApiRequest(Requests.SING_IN_URL));
 
-            System.out.println("Enter your phone number to complete signing up:");
-            String phone = input.nextLine();
-            signupModel.setPhoneNumber(phone);
-            signupModel.setId((long)User.USER_ID);
-            System.out.println(apiRequestHandler.makeApiPostRequest(Requests.USER_SIGN_UP_URL,signupModel));
-            System.out.println("Your account is ready");
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            return "\n";
         }
 
-        return "You are signed in";
+        @ShellMethod(key="sign-up",value="You will create an account")
+        public String signup(Scanner scannerMock){
+            Scanner input = new Scanner(System.in);
+            SignUpModel signupModel = new SignUpModel();
+
+            RestTemplate restTemplate = new RestTemplate();
+            ApiRequestHandler apiRequestHandler = new ApiRequestHandler(restTemplate);
+
+            try {
+
+                System.out.println("Enter your phone number to complete signing up:");
+                String phone = input.nextLine();
+                signupModel.setPhoneNumber(phone);
+                signupModel.setId((long)User.USER_ID);
+                System.out.println(apiRequestHandler.makeApiPostRequest(Requests.USER_SIGN_UP_URL,signupModel));
+                System.out.println("Your account is ready");
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+
+            return "You are signed in";
+        }
+
+
     }
-
-
-}

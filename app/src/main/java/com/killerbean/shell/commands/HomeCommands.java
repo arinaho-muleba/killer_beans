@@ -2,30 +2,21 @@ package com.killerbean.shell.commands;
 
 import com.killerbean.shell.Helpers.ApiRequestHandler;
 import com.killerbean.shell.Helpers.Requests;
-import com.killerbean.shell.Helpers.User;
+import com.killerbean.shell.model.Bean;
 import com.killerbean.shell.model.OrderClientView;
 import com.killerbean.shell.model.OrderLine;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
-import com.killerbean.shell.Helpers.Requests;
-import com.killerbean.shell.model.Bean;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URISyntaxException;
 import java.util.*;
-import java.util.function.Function;
 
 import static com.killerbean.shell.Helpers.BeanProcessor.printBeans;
 import static com.killerbean.shell.Helpers.BeanProcessor.processBeanJSON;
@@ -39,7 +30,7 @@ import static com.killerbean.shell.Helpers.Requests.*;
 public class HomeCommands {
     @Autowired
     private HttpServletRequest request;
-    private RestTemplate restTemplate;
+    public RestTemplate restTemplate;
 
     public HomeCommands() {
         this.restTemplate = new RestTemplate();
@@ -62,7 +53,7 @@ public class HomeCommands {
     }
 
 
-    private static int askToProceed(String question){
+    public static int askToProceed(String question){
 
         System.out.println(question);
         CONFIRMATION.forEach((index, period) -> System.out.println(index + ". " + period));
@@ -70,7 +61,7 @@ public class HomeCommands {
         return readChoice(CONFIRMATION,scanner);
     }
 
-    private static int askFatalityPeriod(){
+    public static int askFatalityPeriod(){
         System.out.println("\nAre you interested in any estimated time period in which you'd like our product to take fatal effect?");
         System.out.println("Please select one of the following options:\n");
         OPTIONS.forEach((index, period) -> System.out.println(index + ". " + period));
@@ -99,7 +90,7 @@ public class HomeCommands {
     }
 
 
-    private static int readChoice(Map<Integer, String> optionMap,Scanner scanner ) {
+    public static int readChoice(Map<Integer, String> optionMap, Scanner scanner) {
         System.out.print("Enter the number of your choice: ");
         int choice = scanner.nextInt();
         while (!optionMap.containsKey(choice)) {
@@ -140,7 +131,7 @@ public class HomeCommands {
 
 
 
-    private int getQuantity(Scanner scanner) {
+    public int getQuantity(Scanner scanner) {
         int quantity = 0;
         while (quantity == 0) {
             System.out.print("Enter the quantity: ");
@@ -160,7 +151,6 @@ public class HomeCommands {
 
     @ShellMethod(key="order-beans",value="The ordering process will be initiated")
     public String OrderBeans() throws URISyntaxException {
-
         int periodChosen = askFatalityPeriod();
         Map<Integer,Bean> chosenBeanSet = getChosenSetOfBeans(periodChosen);
 
