@@ -29,7 +29,7 @@ import static com.killerbean.shell.Helpers.Requests.*;
 @ShellComponent
 public class HomeCommands {
 
-    private static final String PROMPT_ENTER_QUANTITY = "Enter the quantity: ";
+    public static final String PROMPT_ENTER_QUANTITY = "Enter the quantity: ";
     private static final String PROMPT_QUANTITY_CHOICE = "Please indicate the quantity of this product you wish to purchase:";
     private static final String PROMPT_PRODUCT_CHOICE= "Please input the product index you wish to purchase, or type 'end' to complete your cart:";
     public static final String NOTICE_NO_STOCK = "\u001B[33m" + "At the moment, there are no items available in this time period collection. However, we plan to restock shortly." + "\u001B[0m\n";
@@ -67,7 +67,7 @@ public class HomeCommands {
     }
 
 
-    private static int askToProceed(String question){
+    public static int askToProceed(String question){
 
         System.out.println(question);
         CONFIRMATION.forEach((index, period) -> System.out.println(index + ". " + period));
@@ -75,7 +75,7 @@ public class HomeCommands {
         return readChoice(CONFIRMATION,scanner);
     }
 
-    private static int askFatalityPeriod(){
+    public static int askFatalityPeriod(){
         System.out.println(ASK_PRODUCT_SET);
         System.out.println("Please select one of the following options:\n");
         OPTIONS.forEach((index, period) -> System.out.println(index + ". " + period));
@@ -114,7 +114,7 @@ public class HomeCommands {
         };
     }
 
-    private static int readChoice(Map<Integer, String> optionMap,Scanner scanner ) {
+    public static int readChoice(Map<Integer, String> optionMap, Scanner scanner) {
         System.out.print("Enter the number for your choice: ");
         int choice = scanner.nextInt();
         while (!optionMap.containsKey(choice)) {
@@ -150,7 +150,7 @@ public class HomeCommands {
     }
 
 
-    private int getQuantity(Scanner scanner, int stock, int accumulatedQuantity) {
+    public int getQuantity(Scanner scanner, int stock, int accumulatedQuantity) {
         int quantity = 0;
 
         while (quantity == 0) {
@@ -231,7 +231,7 @@ public class HomeCommands {
         return ORDER_PLACED_MESSAGE;
     }
 
-    private Address takeAddress() {
+    public Address takeAddress() {
 
         Scanner scanner = new Scanner(System.in);
         String streetAddress = askForAddress(scanner, PROMPT_ADDRESS_STREET);
@@ -309,7 +309,7 @@ public class HomeCommands {
         return productDetails;
     }
 
-    private void displayOrderDetails(Map<Long, OrderDetail> productDetails) {
+    public void displayOrderDetails(Map<Long, OrderDetail> productDetails) {
 
 
         System.out.println("\u001B[38;5;208mOrder Summary:\u001B[0m\n");
