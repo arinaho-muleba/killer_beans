@@ -2,12 +2,15 @@ package com.killerbean.shell.agentCommands;
 
 import com.killerbean.shell.Helpers.OrderProcessor;
 import com.killerbean.shell.Helpers.OrderService;
-import com.killerbean.shell.enums.Urls;
+import com.killerbean.shell.Helpers.User;
+import com.killerbean.shell.commands.AccessCommands;
 import com.killerbean.shell.model.Order;
 import com.killerbean.shell.model.OrderLine;
 import org.springframework.context.annotation.Bean;
+import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -148,6 +151,15 @@ public class AgentCommand {
             return;
         }
     }
+
+    @ShellMethodAvailability({"get-orders", "my-orders"})
+    public Availability availabilityCheck() {
+        return AccessCommands.connected && User.IS_ADMIN
+                ? Availability.available()
+                : Availability.unavailable("\u001B[38;5;208m you are not signed in as an agent. Please use the 'sign-in' command to gain access if you are an agent.\u001B[0m");
+    }
+
+
 
 
 

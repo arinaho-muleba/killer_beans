@@ -37,8 +37,7 @@ public class ApiRequestHandler {
         if (response.getStatusCode().is2xxSuccessful()) {
             responseBody = response.getBody();
 
-        } else if (response.getStatusCodeValue() == 302) {
-            redirectUser();
+        } else if (response.getStatusCode().value()== 302) {
             String responseHeader = response.getHeaders().getFirst("Location");
             System.out.println("\nFollow the link to log-in." + "\n" + "Location if you are not redirected :" + responseHeader);
             Scanner scanner = new Scanner(System.in);
@@ -49,7 +48,7 @@ public class ApiRequestHandler {
             User.USER_ID = Integer.parseInt(input.split(":")[1]);
             User.IS_ADMIN = Boolean.parseBoolean(input.split(":")[2]);
         } else {
-            System.err.println("\nRequest Failed with code : " + response.getStatusCodeValue());
+            System.err.println("\nRequest Failed with code : " + response.getStatusCode().value());
         }
         return responseBody;
     }
@@ -68,7 +67,7 @@ public class ApiRequestHandler {
         if (response.getStatusCode().is2xxSuccessful()) {
             responseBody = response.getBody();
 
-        } else if (response.getStatusCodeValue() == 302) {
+        } else if (response.getStatusCode().value() == 302) {
             String responseHeader = response.getHeaders().getFirst("Location");
             System.out.println("\nFollow the link to log-in." + "\n" + "Location :" + responseHeader);
             Scanner scanner = new Scanner(System.in);
@@ -96,9 +95,7 @@ public class ApiRequestHandler {
         if (response.getStatusCode().is2xxSuccessful()) {
             responseBody = response.getBody();
 
-            // Process the response
-            //System.out.println("API response: " + responseBody);
-        } else if (response.getStatusCodeValue() == 302) {
+        } else if (response.getStatusCode().value() == 302) {
             String responseHeader = response.getHeaders().getFirst("Location");
             System.out.println("\nFollow the link to log-in." + "\n" + "Location :" + responseHeader);
             Scanner scanner = new Scanner(System.in);
@@ -108,7 +105,7 @@ public class ApiRequestHandler {
             User.USER_ID = Integer.parseInt(input.split(":")[1]);
             User.IS_ADMIN = Boolean.parseBoolean(input.split(":")[2]);
         } else {
-            System.err.println("\nRequest Failed with code : " + response.getStatusCodeValue());
+            System.err.println("\nRequest Failed with code : " + response.getStatusCode().value());
         }
         return responseBody;
     }
