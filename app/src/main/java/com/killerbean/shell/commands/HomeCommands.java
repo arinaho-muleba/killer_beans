@@ -177,7 +177,7 @@ public class HomeCommands {
 
 
         System.out.println(orderJSON.toString());
-    //    postEntity("orders/create",orderJSON);
+        postEntity("orders/create",orderJSON);
     }
 
     @ShellMethod(key="order-beans",value="The ordering process will be initiated")
@@ -313,7 +313,7 @@ public class HomeCommands {
 
         int userID = User.USER_ID;
 
-        String orderJSON = getEntity("orders/byUser/" + userID);
+        String orderJSON = getEntity("orders/byUser/1");
         if(orderJSON.equals("[]")) return NOTICE_NO_ORDERS ;
 
         System.out.println( "Here are your orders:\n");

@@ -32,11 +32,24 @@ public class BeanController {
         return beanService.getAllBeans();
     }
 
+
     @GetMapping("/getByTimeToKillRange")
-    public List<Bean> getBeansByTimeToKillRange(
-            @RequestParam("minTimeToKill") int minTimeToKill,
-            @RequestParam("maxTimeToKill") int maxTimeToKill) {
-        return beanService.getBeansByTimeToKillRange(minTimeToKill, maxTimeToKill);
+    public ResponseEntity<?> getBeansByTimeToKillRange(
+            @RequestParam("minTimeToKill") Integer minTimeToKill,
+            @RequestParam("maxTimeToKill") Integer maxTimeToKill) {
+
+        if (minTimeToKill == null || maxTimeToKill == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("minTimeToKill and maxTimeToKill must be provided as integers");
+        }
+
+        if (minTimeToKill >= maxTimeToKill) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("minTimeToKill should be less than maxTimeToKill");
+        }
+
+        List<Bean> beans = beanService.getBeansByTimeToKillRange(minTimeToKill, maxTimeToKill);
+        return ResponseEntity.ok(beans);
     }
 
     @GetMapping("/timeToKill/{minTimeToKill}")
