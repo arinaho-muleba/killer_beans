@@ -16,6 +16,7 @@ import static com.killerbean.shell.Helpers.Requests.redirectUser;
 public class AccessCommands {
 
     public static boolean connected = false;
+    public static boolean role;
     @Value("${github.client.id}")
     private String clientId;
 
@@ -39,35 +40,11 @@ public class AccessCommands {
             e.printStackTrace();
         }
 
-
-
-
+        role = User.IS_ADMIN;
         connected=true;
         return "\u001B[32mYou have successfully signed in\n\u001B[0m";
     }
 
-    @ShellMethod(key="sign-up",value="You will create an account")
-    public String signup(){
-        Scanner input = new Scanner(System.in);
-        SignUpModel signupModel = new SignUpModel();
-
-        RestTemplate restTemplate = new RestTemplate();
-        ApiRequestHandler apiRequestHandler = new ApiRequestHandler(restTemplate);
-
-        try {
-
-            System.out.println("Enter your phone number to complete signing up:");
-            String phone = input.nextLine();
-            signupModel.setPhoneNumber(phone);
-            signupModel.setId((long)User.USER_ID);
-            System.out.println(apiRequestHandler.makeApiPostRequest(Requests.USER_SIGN_UP_URL,signupModel));
-            System.out.println("Your account is ready");
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        return "You are signed in";
-    }
 
 
 }

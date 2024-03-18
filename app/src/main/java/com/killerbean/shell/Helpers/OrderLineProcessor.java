@@ -33,7 +33,7 @@ public class OrderLineProcessor {
     public static void printOrderLines(Map<Integer, OrderLine> orderMap) {
 
         System.out.println("\u001B[32m name\t\tDaysToKill\t\t\t\tprice\t\t\t\tQuantity Bought\t\t\tTotal Cost\u001B[0m");
-        System.out.println("\u001B[33m------------------------------------------------------------------------------------------\u001B[0m");
+        System.out.println("\u001B[33m-------------------------------------------------------------------------------------------------\u001B[0m");
         for (Map.Entry<Integer, OrderLine> entry : orderMap.entrySet()) {
             System.out.println(entry.getValue());
         }

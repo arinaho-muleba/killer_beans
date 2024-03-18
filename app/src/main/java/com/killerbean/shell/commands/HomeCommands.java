@@ -44,7 +44,7 @@ public class HomeCommands {
     private static final String ORDER_PLACED_MESSAGE = "\u001B[32m\nThank you! Your order has been placed. \u001B[0m" +
             "\u001B[35m\n\nAn agent will attend to it and contact you on your phone number.\n\u001B[0m" +
             "\u001B[36mYou may also check the status of your order by typing 'check-orders'.\n\u001B[0m";
-    public static final String ORDER_CANCELLED_MESSAGE = "\u001B[38;5;208mYou have cancelled the ordering process. Thank you for your consideration.\u001B[0m";
+    public static final String ORDER_CANCELLED_MESSAGE = "\u001B[38;5;208mYou have cancelled the ordering process. Thank you for your consideration.\u001B[0m\n";
 
 
     private static final Map<Integer, String> CONFIRMATION = new HashMap<>();
@@ -84,18 +84,35 @@ public class HomeCommands {
         return readChoice(OPTIONS,scanner);
     }
 
-    private static Map<Integer, Bean> getChosenSetOfBeans(int choice) throws URISyntaxException {
-        return switch (choice) {
-            case 1 -> getBeanOptions();
-            case 2 -> getBeanOptions("1", "3");
-            case 3 -> getBeanOptions("4", "6");
-            case 4 -> getBeanOptions("7", "9");
-            case 5 -> getBeanOptions("10");
-            default -> throw new IllegalArgumentException("You have chosen an invalid option: " + choice);
-        };
+    private enum FatalityPeriod {
+        Any(1),
+        OneToThreeDays(2),
+        FourToSixDays(3),
+        SevenToNineDays(4),
+        TenPlusDays(5),
+        Cancel(6);
 
+        private final int value;
+
+        FatalityPeriod(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
-
+    private static Map<Integer, Bean> getChosenSetOfBeans(FatalityPeriod period) throws URISyntaxException {
+        return switch (period) {
+            case Any -> getBeanOptions();
+            case OneToThreeDays -> getBeanOptions("1", "3");
+            case FourToSixDays -> getBeanOptions("4", "6");
+            case SevenToNineDays -> getBeanOptions("7", "9");
+            case TenPlusDays -> getBeanOptions("10");
+            case Cancel -> null;
+            default -> throw new IllegalArgumentException("Invalid fatality period: " + period);
+        };
+    }
 
     private static int readChoice(Map<Integer, String> optionMap,Scanner scanner ) {
         System.out.print("Enter the number for your choice: ");
@@ -175,16 +192,18 @@ public class HomeCommands {
         orderJSON.put("address", addressJSON);
         orderJSON.put("minOrderLines", orderLineJSON);
 
-
-        System.out.println(orderJSON.toString());
         postEntity("orders/create",orderJSON);
     }
 
     @ShellMethod(key="order-beans",value="The ordering process will be initiated")
     public String OrderBeans() throws URISyntaxException {
         int periodChosen = askFatalityPeriod();
-        Map<Integer, Bean> chosenBeanSet = getChosenSetOfBeans(periodChosen);
+        if (periodChosen == FatalityPeriod.Cancel.getValue()) {
+            return ORDER_CANCELLED_MESSAGE;
+        }
+        Map<Integer, Bean> chosenBeanSet = getChosenSetOfBeans(FatalityPeriod.values()[periodChosen - 1]);
 
+        assert chosenBeanSet != null;
         if(chosenBeanSet.isEmpty()) return NOTICE_NO_STOCK;
 
         printBeans(chosenBeanSet);
@@ -294,7 +313,9 @@ public class HomeCommands {
 
 
         System.out.println("\u001B[38;5;208mOrder Summary:\u001B[0m\n");
-        System.out.println("\u001B[36mProduct          Quantity            Total Cost\u001B[0m\n");
+        System.out.println("-----------------------------------------------------------------------------------------");
+        System.out.println("\u001B[36mProduct          Quantity            Total Cost\u001B[0m");
+        System.out.println("-----------------------------------------------------------------------------------------");
         BigDecimal overallTotalCost= BigDecimal.valueOf(0.0);
         for (Map.Entry<Long, OrderDetail> entry : productDetails.entrySet()) {
             long productID= entry.getKey();
@@ -313,7 +334,7 @@ public class HomeCommands {
 
         int userID = User.USER_ID;
 
-        String orderJSON = getEntity("orders/byUser/1");
+        String orderJSON = getEntity("orders/byUser/" + userID);
         if(orderJSON.equals("[]")) return NOTICE_NO_ORDERS ;
 
         System.out.println( "Here are your orders:\n");
@@ -338,28 +359,23 @@ public class HomeCommands {
 
     @ShellMethodAvailability({"order-beans", "check-orders"})
     public Availability availabilityCheck() {
-        return AccessCommands.connected
+        return AccessCommands.connected && !User.IS_ADMIN
                 ? Availability.available()
-                : Availability.unavailable("\u001B[38;5;208m you are not signed in. Please use the 'sign-in' command to gain access.\u001B[0m");
+                : Availability.unavailable("\u001B[38;5;208m you are not signed in as a client. Please use the 'sign-in' command to gain access if you are a client.\u001B[0m");
     }
 
- public static class OrderDetail {
 
+ public static class OrderDetail {
 
         private  String productName;
         private int quantity;
         private BigDecimal totalCost;
-
 
         public OrderDetail(String productName, int quantity, BigDecimal totalCost) {
             this.productName = productName;
             this.quantity = quantity;
             this.totalCost = totalCost;
         }
-
-     public String getProductName() {
-         return productName;
-     }
 
      public int getQuantity() {
          return quantity;
