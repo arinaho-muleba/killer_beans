@@ -28,8 +28,6 @@ public class Bean {
     private BigDecimal currentPrice;
 
 
-    // Constructor, getters, and setters...
-
     public BigDecimal getCurrentPrice() {
         return currentPrice;
     }
@@ -39,10 +37,6 @@ public class Bean {
             this.currentPrice = currentPrice.get().getPrice();
         }
     }
-
-//    public void setCurrentPrice(Price price) {
-//        this.currentPrice = price.getPrice();
-//    }
 
     public Bean() {
     }

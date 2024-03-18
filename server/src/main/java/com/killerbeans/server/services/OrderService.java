@@ -75,34 +75,39 @@ public class OrderService {
     }
 
     public Order createOrder(OrderCreationRequest orderRequest) {
-        // Retrieve customer and address from request
-        Customer customer = customerRepository.findById(orderRequest.getCustomerId()).orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+
+        Customer customer = customerRepository.findById(orderRequest.getCustomerId())
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
         Address address = orderRequest.getAddress();
 
-        // Save address if it doesn't exist
         address = addressRepository.save(address);
 
-        // Create order
         Order order = new Order();
         order.setCustomer(customer);
         order.setDateTime(LocalDateTime.now());
         order.setAddress(address);
-        // Optionally set status, agent, etc.
         statusService.initialStatus().ifPresent(order::setStatus);
 
-        // Save order
         order = orderRepository.save(order);
 
-        // Add order lines
         for (MinOrderLine minOrderLine : orderRequest.getMinOrderLines()) {
-            Bean bean = beanRepository.findById(minOrderLine.getItemId()).orElseThrow(() -> new IllegalArgumentException("Item not found"));
+            Bean bean = beanRepository.findById(minOrderLine.getItemId())
+                    .orElseThrow(() -> new IllegalArgumentException("Item not found"));
+
+            if (bean.getQuantity() < minOrderLine.getQuantity()) {
+                throw new IllegalArgumentException("Not enough quantity available for item: " + bean.getName());
+            }
+
             OrderLine orderLine = new OrderLine();
             orderLine.setOrder(order);
             orderLine.setBean(bean);
             orderLine.setQuantity(minOrderLine.getQuantity());
-            // Save order line
+
             orderLineRepository.save(orderLine);
-            // Optionally handle quantity, bean existence, etc.
+
+            int remainingQuantity = bean.getQuantity() - minOrderLine.getQuantity();
+            bean.setQuantity(remainingQuantity);
+            beanRepository.save(bean);
         }
 
         return order;
